@@ -1,0 +1,42 @@
+#!/bin/bash
+# .git/hooks/post-commit
+# Git requires a Bash shell to initiate hooks on both Linux and Windows (Git Bash).
+# Este script actúa como puente inteligente detectando el sistema operativo.
+
+# 1. Detección de Sistema Operativo
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+    # --- ENTORNO WINDOWS ---
+    # Delegamos de manera oculta y asíncrona a PowerShell para no congelar la consola de Git
+    powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File ".git/hooks/update-graph.ps1" &
+else
+    # --- ENTORNO UBUNTU / LINUX ---
+    # Guardia: Evitar superposición si ya hay una actualización corriendo
+    if pgrep -f "code-review-graph" > /dev/null || pgrep -f "graphify" > /dev/null; then
+        echo "Actualización de grafo ya en ejecución en Linux. Saltando..."
+        exit 0
+    fi
+
+    # Asegurar que Ollama esté corriendo si se usa en Linux
+    if ! pgrep -x "ollama" > /dev/null; then
+        if command -v ollama > /dev/null 2>&1; then
+            nohup ollama serve > /dev/null 2>&1 &
+            sleep 3
+        fi
+    fi
+
+    # Ejecutar actualizaciones en segundo plano (con límite de tiempo de 5 min)
+    # Intenta usar la herramienta instalada globalmente, si no, usa uvx al vuelo
+    if command -v code-review-graph > /dev/null 2>&1; then
+        nohup timeout 300 code-review-graph update > /dev/null 2>&1 &
+    elif command -v uvx > /dev/null 2>&1; then
+        nohup timeout 300 uvx code-review-graph update > /dev/null 2>&1 &
+    fi
+
+    if command -v graphify > /dev/null 2>&1; then
+        nohup timeout 300 graphify update > ~/.cache/graphify-rebuild.log 2>&1 &
+    elif command -v uvx > /dev/null 2>&1; then
+        nohup timeout 300 uvx --from graphifyy graphify update > ~/.cache/graphify-rebuild.log 2>&1 &
+    fi
+fi
+
+exit 0

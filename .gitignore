@@ -1,0 +1,27 @@
+# ====================================================================
+# Ecosistema de Documentación Local (DeepWiki / CRG / Graphify)
+# ====================================================================
+# Ignorar bases de datos locales indexadas por CRG
+*.db
+*.db-journal
+*.sqlite
+
+# Ignorar la bóveda de documentación autogenerada de Graphify
+/ai-vault/
+
+# Ignorar logs de reconstrucción
+*.log
+graphify-rebuild.log
+
+# ====================================================================
+# Entornos Virtuales y Dependencias de Lenguajes (Por seguridad)
+# ====================================================================
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+dist/
+build/
+target/
+.uv/
