@@ -2,6 +2,8 @@
 # Script de instalación y configuración automatizada para Windows (Ejecutar en PowerShell).
 # Configura Ollama, uv, code-review-graph, graphify y Git Hooks.
 
+$ErrorActionPreference = "Stop"
+
 Write-Host "=== Iniciando Instalación del Ecosistema DeepWiki Documenter (Windows) ===" -ForegroundColor Cyan
 
 # 1. Verificar/Instalar 'uv' (herramienta de empaquetado de Python ultra rápida)
@@ -53,15 +55,15 @@ Write-Host "Variable de entorno CRG_TOOLS configurada correctamente." -Foregroun
 
 # 5. Registrar herramientas MCP en el entorno local
 Write-Host "Registrando herramientas en los editores compatibles..." -ForegroundColor Yellow
-code-review-graph install
+code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions
 
-# 6. Copiar archivos ignore a la raíz del repositorio
-Write-Host "Copiando archivos ignore..." -ForegroundColor Yellow
-if (Test-Path ".\.graphifyignore") {
-    Copy-Item -Path ".\.graphifyignore" -Destination ".\.graphifyignore" -Force
+# 6. Verificar archivos de configuración esperados
+Write-Host "Verificando archivos ignore en la raíz del repositorio..." -ForegroundColor Yellow
+if (-not (Test-Path ".\.graphifyignore")) {
+    Write-Host "ADVERTENCIA: Falta el archivo .graphifyignore en la raíz del repositorio." -ForegroundColor Yellow
 }
-if (Test-Path ".\.code-review-graphignore") {
-    Copy-Item -Path ".\.code-review-graphignore" -Destination ".\.code-review-graphignore" -Force
+if (-not (Test-Path ".\.code-review-graphignore")) {
+    Write-Host "ADVERTENCIA: Falta el archivo .code-review-graphignore en la raíz del repositorio." -ForegroundColor Yellow
 }
 
 # 7. Instalar Git Hooks locales
@@ -85,7 +87,10 @@ Write-Host "Construyendo el mapa estructural del código (build)..." -Foreground
 code-review-graph build
 
 Write-Host "Generando vectores semánticos con Ollama (embed)..." -ForegroundColor Cyan
-code-review-graph embed
+uvx --from "code-review-graph[embeddings]" code-review-graph embed
+
+Write-Host "Sincronizando skills de Graphify para evitar desfases de versión..." -ForegroundColor Cyan
+graphify install --platform copilot
 
 Write-Host "Actualizando la DeepWiki (graphify)..." -ForegroundColor Cyan
 graphify update

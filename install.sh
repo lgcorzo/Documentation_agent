@@ -71,12 +71,12 @@ fi
 
 # 5. Registrar herramientas MCP en el entorno local
 echo -e "${YELLOW}Registrando herramientas en los editores compatibles...${NC}"
-code-review-graph install
+code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions
 
-# 6. Copiar archivos ignore a la raíz del repositorio
-echo -e "${YELLOW}Copiando archivos ignore...${NC}"
-[ -f "./.graphifyignore" ] && cp "./.graphifyignore" "./.graphifyignore"
-[ -f "./.code-review-graphignore" ] && cp "./.code-review-graphignore" "./.code-review-graphignore"
+# 6. Verificar archivos de configuración esperados
+echo -e "${YELLOW}Verificando archivos ignore en la raíz del repositorio...${NC}"
+[ ! -f "./.graphifyignore" ] && echo -e "${YELLOW}ADVERTENCIA: Falta el archivo .graphifyignore en la raíz del repositorio.${NC}"
+[ ! -f "./.code-review-graphignore" ] && echo -e "${YELLOW}ADVERTENCIA: Falta el archivo .code-review-graphignore en la raíz del repositorio.${NC}"
 
 # 7. Instalar Git Hooks locales
 if [ -d ".git" ]; then
@@ -101,7 +101,10 @@ echo -e "${CYAN}Construyendo el mapa estructural del código (build)...${NC}"
 code-review-graph build
 
 echo -e "${CYAN}Generando vectores semánticos con Ollama (embed)...${NC}"
-code-review-graph embed
+uvx --from "code-review-graph[embeddings]" code-review-graph embed
+
+echo -e "${CYAN}Sincronizando skills de Graphify para evitar desfases de versión...${NC}"
+graphify install --platform copilot
 
 echo -e "${CYAN}Actualizando la DeepWiki (graphify)...${NC}"
 graphify update

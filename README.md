@@ -59,6 +59,39 @@ chmod +x install.sh
 
 *(Nota: En Linux, después de que finalice la instalación, recuerda ejecutar `source ~/.bashrc` o `source ~/.zshrc` según el shell que utilices).*
 
+### Instalación automática en otro repositorio (recomendada para GitHub Copilot Agent)
+
+Si quieres instalar este agente en un repositorio destino, usa los scripts wrapper para evitar errores por pasos manuales.
+
+Windows (PowerShell):
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force
+.\install-into-repo.ps1 "C:\ruta\al\repositorio\destino"
+```
+
+Linux/macOS (Bash):
+
+```bash
+chmod +x install-into-repo.sh
+./install-into-repo.sh /ruta/al/repositorio/destino
+```
+
+Estos scripts:
+- Copian automáticamente `.agentskills`, `hooks`, `.graphifyignore`, `.code-review-graphignore` e instalador.
+- Ejecutan el instalador dentro del repositorio destino.
+- Reducen errores por rutas, copias parciales o prompts interactivos.
+
+### Mejoras de robustez del instalador
+
+Los instaladores (`install.ps1` y `install.sh`) están preparados para evitar errores comunes:
+
+- Ejecutan `code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions` para evitar prompts y archivos extra.
+- Instalan configuración solo para GitHub Copilot (`--platform copilot`) para evitar archivos de otras plataformas.
+- No realizan copias del archivo sobre sí mismo para `.graphifyignore` y `.code-review-graphignore`.
+- Generan embeddings usando `uvx --from "code-review-graph[embeddings]" code-review-graph embed`, evitando el error por falta de `sentence-transformers`.
+- Sincronizan `graphify` antes del `update` para minimizar avisos de desajuste de versión.
+
 ---
 
 ## 🔄 ¿Cómo Funciona la Sincronización?
@@ -87,3 +120,8 @@ Para navegar visualmente por la arquitectura del proyecto:
 2. Selecciona **"Open folder as vault"** (Abrir carpeta como bóveda).
 3. Selecciona el directorio `ai-vault` que se ha generado en la raíz de tu proyecto.
 4. Presiona `Ctrl + G` (o `Cmd + G` en macOS) para ver el **Grafo Interconectado** del proyecto en tiempo real.
+
+
+## references 
+
+• [Graphify](https://dev.to/mir_mursalin_ankur/graphify-code-review-graph-build-a-self-updating-knowledge-graph-for-claude-code-and-other-ai-j1m) (mir_mursalin_ankur): Construye un gráfico de conocimiento auto-actualizable del repositorio (AST y dependencias) para evitar que la IA realice búsquedas ciegas (grep o glob), reduciendo drásticamente la saturación de tokens y el context drift.
