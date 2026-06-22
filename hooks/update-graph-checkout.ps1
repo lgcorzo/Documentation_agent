@@ -78,10 +78,10 @@ if ($changedFilesCount -gt 5) {
 
     if ($graphifyGlobal) {
         $envMap = @{ "GRAPHIFY_FORCE" = "true" }
-        Start-BgProcess -FileName "graphify" -Arguments "update" -EnvVars $envMap
+        Start-BgProcess -FileName "graphify" -Arguments "update ." -EnvVars $envMap
     } elseif ($uvCheck) {
         $envMap = @{ "GRAPHIFY_FORCE" = "true" }
-        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update" -EnvVars $envMap
+        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update ." -EnvVars $envMap
     }
 } else {
     # --- CAMBIO PEQUEÑO: Actualización Incremental (update) ---
@@ -92,8 +92,8 @@ if ($changedFilesCount -gt 5) {
     }
 
     if ($graphifyGlobal) {
-        Start-BgProcess -FileName "graphify" -Arguments "update"
+        Start-BgProcess -FileName "graphify" -Arguments "update ."
     } elseif ($uvCheck) {
-        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update"
+        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update ."
     }
 }

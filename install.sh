@@ -23,9 +23,14 @@ else
 fi
 
 # 2. Instalar herramientas globales de Python utilizando uv
-echo -e "${YELLOW}Instalando code-review-graph y graphifyy...${NC}"
+echo -e "${YELLOW}Instalando code-review-graph y graphify...${NC}"
 uv tool install code-review-graph
-uv tool install graphifyy
+
+# Graphify package naming may vary across releases/channels.
+if ! uv tool install graphify; then
+    echo -e "${YELLOW}No se pudo instalar 'graphify'. Intentando con 'graphifyy'...${NC}"
+    uv tool install graphifyy
+fi
 
 # Asegurar que el PATH del usuario incluya el directorio de herramientas de uv
 export PATH="$HOME/.local/bin:$PATH"
@@ -107,7 +112,10 @@ echo -e "${CYAN}Sincronizando skills de Graphify para evitar desfases de versió
 graphify install --platform copilot
 
 echo -e "${CYAN}Actualizando la DeepWiki (graphify)...${NC}"
-graphify update
+graphify update .
+
+echo -e "${CYAN}Regenerando comunidades del reporte de Graphify...${NC}"
+graphify cluster-only .
 
 echo -e "${GREEN}=== ¡Instalación Completada con Éxito! ===${NC}"
 echo -e "${GREEN}GitHub Copilot ahora cuenta con búsquedas semánticas locales y mantiene tu DeepWiki viva.${NC}"

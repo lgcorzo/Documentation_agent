@@ -9,6 +9,11 @@ fi
 SOURCE_ROOT="$(cd "$(dirname "$0")" && pwd)"
 TARGET_ROOT="$(cd "$1" && pwd)"
 
+if [ "$SOURCE_ROOT" = "$TARGET_ROOT" ]; then
+  echo "ERROR: El repositorio origen y destino son el mismo. Evita instalar sobre el propio repositorio."
+  exit 1
+fi
+
 echo "=== Instalando DeepWiki Documenter en repositorio destino ==="
 echo "Origen:  $SOURCE_ROOT"
 echo "Destino: $TARGET_ROOT"
@@ -49,5 +54,29 @@ echo "Archivos del agente copiados. Ejecutando instalador en destino..."
   chmod +x ./install.sh
   ./install.sh
 )
+
+echo "Verificando instalación en destino..."
+required_paths=(
+  ".vscode/mcp.json"
+  ".git/hooks/post-commit"
+  ".git/hooks/post-checkout"
+  ".code-review-graph/graph.db"
+  ".code-review-graph/wiki"
+  "graphify-out/GRAPH_REPORT.md"
+)
+
+missing=()
+for required in "${required_paths[@]}"; do
+  if [ ! -e "$TARGET_ROOT/$required" ]; then
+    missing+=("$required")
+  fi
+done
+
+if [ "${#missing[@]}" -gt 0 ]; then
+  printf 'ERROR: La instalación finalizó con faltantes: %s\n' "${missing[*]}"
+  exit 1
+fi
+
+echo "Verificación final completada correctamente."
 
 echo "=== Instalación completada en: $TARGET_ROOT ==="

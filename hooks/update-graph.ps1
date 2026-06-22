@@ -59,10 +59,10 @@ if ($crgGlobal) {
 # 4. Lanzar actualización de Graphify
 $graphifyGlobal = Get-Command graphify -ErrorAction SilentlyContinue
 if ($graphifyGlobal) {
-    Start-BgProcess -FileName "graphify" -Arguments "update"
+    Start-BgProcess -FileName "graphify" -Arguments "update ."
 } else {
     $uvCheck = Get-Command uv -ErrorAction SilentlyContinue
     if ($uvCheck) {
-        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update"
+        Start-BgProcess -FileName "uvx" -Arguments "--from graphifyy graphify update ."
     }
 }

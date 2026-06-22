@@ -19,9 +19,15 @@ if (-not $uvCheck) {
 }
 
 # 2. Instalar herramientas globales de Python utilizando uv
-Write-Host "Instalando code-review-graph y graphifyy..." -ForegroundColor Yellow
+Write-Host "Instalando code-review-graph y graphify..." -ForegroundColor Yellow
 uv tool install code-review-graph
-uv tool install graphifyy
+
+# Graphify package naming may vary across releases/channels.
+uv tool install graphify
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "No se pudo instalar 'graphify'. Intentando con 'graphifyy'..." -ForegroundColor Yellow
+    uv tool install graphifyy
+}
 
 # 3. Verificar/Instalar Ollama
 Write-Host "Verificando instalación de Ollama..." -ForegroundColor Yellow
@@ -93,7 +99,10 @@ Write-Host "Sincronizando skills de Graphify para evitar desfases de versión...
 graphify install --platform copilot
 
 Write-Host "Actualizando la DeepWiki (graphify)..." -ForegroundColor Cyan
-graphify update
+graphify update .
+
+Write-Host "Regenerando comunidades del reporte de Graphify..." -ForegroundColor Cyan
+graphify cluster-only .
 
 Write-Host "=== ¡Instalación Completada con Éxito! ===" -ForegroundColor Green
 Write-Host "GitHub Copilot ahora cuenta con búsquedas semánticas locales y mantiene tu DeepWiki viva." -ForegroundColor Green

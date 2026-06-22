@@ -10,6 +10,10 @@ Write-Host "=== Instalando DeepWiki Documenter en repositorio destino ===" -Fore
 $sourceRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $targetRoot = (Resolve-Path -Path $TargetRepoPath).Path
 
+if ($sourceRoot -eq $targetRoot) {
+    throw "El repositorio origen y destino son el mismo. Evita instalar sobre el propio repositorio."
+}
+
 if (-not (Test-Path (Join-Path $targetRoot ".git"))) {
     throw "La ruta destino no parece ser un repositorio git: $targetRoot"
 }
@@ -52,5 +56,30 @@ try {
 finally {
     Pop-Location
 }
+
+Write-Host "Verificando instalación en destino..." -ForegroundColor Yellow
+
+$requiredPaths = @(
+    ".vscode\mcp.json",
+    ".git\hooks\post-commit",
+    ".git\hooks\post-checkout",
+    ".code-review-graph\graph.db",
+    ".code-review-graph\wiki",
+    "graphify-out\GRAPH_REPORT.md"
+)
+
+$missing = @()
+foreach ($required in $requiredPaths) {
+    $fullPath = Join-Path $targetRoot $required
+    if (-not (Test-Path $fullPath)) {
+        $missing += $required
+    }
+}
+
+if ($missing.Count -gt 0) {
+    throw "La instalación finalizó con faltantes: $($missing -join ', ')"
+}
+
+Write-Host "Verificación final completada correctamente." -ForegroundColor Green
 
 Write-Host "=== Instalación completada en: $targetRoot ===" -ForegroundColor Green

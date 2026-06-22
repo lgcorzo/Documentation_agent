@@ -23,7 +23,7 @@ graph TD
 1. **El Cerebro (`.agentskills/`):** El archivo `SKILL.md` define las directrices y reglas del agente, ordenándole estructurar la documentación como una wiki interconectada mediante Wikilinks (`[[Clase]]`) e identificando el radio de impacto de los cambios.
 2. **El Grafo Estructural (`code-review-graph`):** Herramienta que analiza el Árbol de Sintaxis Abstracta (AST) de tu proyecto y lo guarda en una base de datos local SQLite. Expone herramientas MCP al agente para entender dependencias.
 3. **El Motor Semántico (`Ollama` & `nomic-embed-text`):** Corre localmente y genera embeddings del código fuente, permitiendo al agente realizar búsquedas conceptuales (ej. buscar dónde se procesan pagos sin depender de nombres exactos de funciones).
-4. **La Deep Wiki (`graphify`):** Convierte el grafo en ficheros Markdown individuales dentro de la carpeta `./ai-vault/`. Puedes abrir esta carpeta en **Obsidian** para ver un mapa gráfico y navegable de toda tu arquitectura de software.
+4. **La Deep Wiki (`graphify`):** Genera artefactos de conocimiento en `./graphify-out/` (`graph.json`, `graph.html`, `GRAPH_REPORT.md`) para navegación técnica y análisis de comunidades.
 5. **Los Automatizadores (`hooks/`):** Git Hooks (`post-commit` y `post-checkout`) que ejecutan de forma invisible y paralela las actualizaciones de la base de datos y la wiki al programar, asegurando que el agente nunca trabaje con información obsoleta.
 
 ---
@@ -90,7 +90,20 @@ Los instaladores (`install.ps1` y `install.sh`) están preparados para evitar er
 - Instalan configuración solo para GitHub Copilot (`--platform copilot`) para evitar archivos de otras plataformas.
 - No realizan copias del archivo sobre sí mismo para `.graphifyignore` y `.code-review-graphignore`.
 - Generan embeddings usando `uvx --from "code-review-graph[embeddings]" code-review-graph embed`, evitando el error por falta de `sentence-transformers`.
-- Sincronizan `graphify` antes del `update` para minimizar avisos de desajuste de versión.
+- Ejecutan `graphify install --platform copilot`, luego `graphify update .` y `graphify cluster-only .` para mantener artefactos consistentes.
+
+### Problemas detectados y corregidos (validados en SpaceInvaders)
+
+- `graphify sync` no existe en la versión actual del CLI (error: unknown command `sync`).
+- Se estandarizó el uso del comando CLI `graphify` y se añadió fallback de instalación de paquete (`graphify` -> `graphifyy`) para entornos donde el nombre publicado difiere.
+- Se corrigió `graphify update` sin ruta explícita a `graphify update .` para evitar ambigüedad de directorio de trabajo.
+- Se añadieron verificaciones post-instalación en wrappers (`install-into-repo.ps1` y `install-into-repo.sh`) para validar:
+    - `.vscode/mcp.json`
+    - `.git/hooks/post-commit`
+    - `.git/hooks/post-checkout`
+    - `.code-review-graph/graph.db`
+    - `.code-review-graph/wiki`
+    - `graphify-out/GRAPH_REPORT.md`
 
 ---
 
@@ -107,7 +120,7 @@ La sincronización se realiza de manera 100% transparente para el desarrollador 
 
 Por diseño y mejores prácticas del equipo, los siguientes elementos están añadidos al archivo `.gitignore`:
 - **Las bases de datos SQLite (`*.db`):** Contienen rutas absolutas locales del sistema del desarrollador e índices locales de Ollama.
-- **La carpeta de salida (`/ai-vault/`):** Al ser autogenerada tras cada commit, subirla al repositorio crearía constantes conflictos de mezcla (merge conflicts) y ensuciaría el historial de Git.
+- **La carpeta de salida (`/graphify-out/`):** Al ser autogenerada tras cada commit, subirla al repositorio crearía constantes conflictos de mezcla (merge conflicts) y ensuciaría el historial de Git.
 
 Cada desarrollador que clone el repositorio simplemente ejecuta el instalador una sola vez (`install.ps1` o `install.sh`) para compilar su propia base de datos y wiki local en segundos.
 
@@ -117,9 +130,15 @@ Cada desarrollador que clone el repositorio simplemente ejecuta el instalador un
 
 Para navegar visualmente por la arquitectura del proyecto:
 1. Descarga e instala [Obsidian](https://obsidian.md/).
-2. Selecciona **"Open folder as vault"** (Abrir carpeta como bóveda).
-3. Selecciona el directorio `ai-vault` que se ha generado en la raíz de tu proyecto.
-4. Presiona `Ctrl + G` (o `Cmd + G` en macOS) para ver el **Grafo Interconectado** del proyecto en tiempo real.
+2. Abre el archivo `graphify-out/graph.html` para navegación interactiva inmediata.
+3. Si quieres una wiki Markdown orientada a revisión de cambios, usa `code-review-graph wiki --force` y consulta `.code-review-graph/wiki`.
+
+## Evidencia de ejecución
+
+La evidencia reproducible de problemas detectados, comandos ejecutados y resultados está en:
+
+- `Documents/Wiki/EVIDENCE.md`
+- `Documents/Wiki/PROBLEMS_AND_FIXES.md`
 
 
 ## references 

@@ -33,9 +33,9 @@ else
     fi
 
     if command -v graphify > /dev/null 2>&1; then
-        nohup timeout 300 graphify update > ~/.cache/graphify-rebuild.log 2>&1 &
+        nohup timeout 300 graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
     elif command -v uvx > /dev/null 2>&1; then
-        nohup timeout 300 uvx --from graphifyy graphify update > ~/.cache/graphify-rebuild.log 2>&1 &
+        nohup timeout 300 uvx --from graphifyy graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
     fi
 fi
 
