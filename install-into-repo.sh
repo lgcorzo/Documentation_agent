@@ -24,7 +24,7 @@ if [ ! -d "$TARGET_ROOT/.git" ]; then
 fi
 
 copy_items=(
-  ".agentskills"
+  ".agents"
   "hooks"
   ".graphifyignore"
   ".code-review-graphignore"

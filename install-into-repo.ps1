@@ -22,7 +22,7 @@ Write-Host "Origen:  $sourceRoot" -ForegroundColor Yellow
 Write-Host "Destino: $targetRoot" -ForegroundColor Yellow
 
 $copyItems = @(
-    ".agentskills",
+    ".agents",
     "hooks",
     ".graphifyignore",
     ".code-review-graphignore",
