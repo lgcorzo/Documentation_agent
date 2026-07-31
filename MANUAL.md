@@ -115,6 +115,31 @@ El ecosistema adapta la extracción de diagramas de componentes y clases según 
 * **Go**: Utiliza `go list -json` o la diagramación de Graphify.
 * **TypeScript / JavaScript**: Utiliza `dependency-cruiser` o `ts-morph` en conjunto con Graphify para extraer dependencias.
 
+### D. Ejecución Local del CLI de LangChain OpenWiki (Opcional)
+Si deseas refrescar la documentación completa simulando el pipeline de integración continua en tu máquina de desarrollo utilizando la herramienta CLI oficial de LangChain:
+
+1. **Instalación Global**:
+   Asegúrate de contar con Node.js 22+ e instala el paquete globalmente:
+   ```bash
+   npm install -g openwiki
+   ```
+   *(Opcional: Añade `mermaid` y `jsdom` si deseas validaciones de diagramas de alta fidelidad: `npm install -g openwiki mermaid jsdom`)*
+
+2. **Configuración de Variables de Entorno**:
+   Define tus claves y proveedor de LLM en tu consola antes de ejecutar:
+   ```bash
+   export OPENWIKI_PROVIDER="openrouter"
+   export OPENROUTER_API_KEY="tu-api-key-de-openrouter"
+   export OPENWIKI_MODEL_ID="z-ai/glm-5.2" # O el modelo asignado por arquitectura
+   export OPENWIKI_LANGSMITH_API_KEY="tu-key-de-langsmith" # Requerido para sincronizar conectores
+   ```
+
+3. **Ejecución de Sincronización**:
+   Corre el comando para actualizar la carpeta `openwiki/` del proyecto:
+   ```bash
+   openwiki code --update --print
+   ```
+
 ---
 
 ## 🔒 5. Reglas de Soberanía (No Negociables)

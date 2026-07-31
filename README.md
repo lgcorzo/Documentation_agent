@@ -134,6 +134,7 @@ Para navegar visualmente por la arquitectura del proyecto:
 - **Cleanup**: Removed obsolete `Documents/` folder and legacy `.agentskills` directory; updated `AGENTS.md` and `CLAUDE.md` to reference `openwiki/index.md` navigation hub.
 - **Refactor (CRG Removal)**: Completely eliminated `code-review-graph` (CRG) and Ollama local server dependencies from installers, hooks, documentation views, configurations, and skills. The ecosystem now relies solely on local Graphify & Pyreverse AST tools.
 - **Multi-Language Update**: Upgraded the documentation agent skills and the root `MANUAL.md` to officially guide C++, C, Rust, Go, TypeScript/JavaScript, and Python codebases under the same local AST-driven workflow.
+- **Local OpenWiki Option**: Added instructions to the root `MANUAL.md` (Section 4.D) outlining how to install and execute the LangChain OpenWiki CLI tool locally with environment variables.
 
 ## references 
 
