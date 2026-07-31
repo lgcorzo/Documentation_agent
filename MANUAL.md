@@ -37,6 +37,7 @@ Asegúrate de contar con las siguientes herramientas en tu sistema local:
 * **Git** instalado.
 * **Python 3.10+** (o el gestor `uv` se encargará de descargarlo).
 * **Node.js 22+** (solo requerido para el motor de generación en CI/CD).
+* **Compilador/Herramientas de tu lenguaje** (ej. `cargo` para Rust, `g++`/`clang` para C/C++, `go` para Go, `npm`/`tsc` para TypeScript). Graphify extraerá la estructura del AST compatible.
 
 ### Instalación en un Nuevo Proyecto (Destino)
 
@@ -105,6 +106,14 @@ Pide a tu agente en el chat:
 #### 2. Actualización Quirúrgica (Al cambiar código)
 Tras realizar cambios locales, indica al agente:
 > `@workspace Usa el skill uml2-okf-documenter en Incremental Git Diff Mode para actualizar la documentación de los módulos modificados en mi último commit.`
+
+### C. Soporte Multilenguaje para Extracción AST
+El ecosistema adapta la extracción de diagramas de componentes y clases según el lenguaje de tu base de código:
+* **Python**: Utiliza `pyreverse -o dot <dir>` para estructurar clases y relaciones.
+* **Rust**: Consulta el grafo AST de Graphify o utiliza herramientas como `cargo-modules` para diagramar la jerarquía de crates.
+* **C/C++**: Extrae dependencias mediante el dump de AST de `clang` o diagramación de Doxygen compatible con Graphify.
+* **Go**: Utiliza `go list -json` o la diagramación de Graphify.
+* **TypeScript / JavaScript**: Utiliza `dependency-cruiser` o `ts-morph` en conjunto con Graphify para extraer dependencias.
 
 ---
 
