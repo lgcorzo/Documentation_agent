@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Set up Python & UV
         uses: astral-sh/setup-uv@v5
       - name: Run OKF Conformance Checker
