@@ -133,13 +133,6 @@ Para navegar visualmente por la arquitectura del proyecto:
 2. Abre el archivo `graphify-out/graph.html` para navegación interactiva inmediata.
 3. Si quieres una wiki Markdown orientada a revisión de cambios, usa `code-review-graph wiki --force` y consulta `.code-review-graph/wiki`.
 
-## Evidencia de ejecución
-
-La evidencia reproducible de problemas detectados, comandos ejecutados y resultados está en:
-
-- `Documents/Wiki/EVIDENCE.md`
-- `Documents/Wiki/PROBLEMS_AND_FIXES.md`
-
 ## 📈 Project Evolution & Changelog
 
 ### 2026-07-31: Lantek ISO-Compliant Agentic & Documental Architecture Refactoring
@@ -149,6 +142,7 @@ La evidencia reproducible de problemas detectados, comandos ejecutados y resulta
 - **ISO Documentation**: Developed full OpenWiki architecture suite (ISO 42010 context/component/AD overview/ADRs, ISO 15289 contracts/audit log, ISO 25010 quality matrix, and ISO 26514 developer guide) inside `./openwiki/`.
 - **CI/CD Quality Gates**: Replaced the mock validator in `skills/validate/scripts/okf_validate.py` with a strict conformance validation utility verifying frontmatter fields, paths, and Mermaid diagram syntax. Corrected CI workflow config files.
 - **Skills Clean Up**: Consolidated and enhanced skills inside `.agents/skills/` (removed legacy `.agentskills/` duplicates).
+- **Cleanup**: Removed obsolete `Documents/` folder and legacy `.agentskills` directory; updated `AGENTS.md` and `CLAUDE.md` to reference `openwiki/index.md` navigation hub.
 
 ## references 
 
