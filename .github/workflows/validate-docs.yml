@@ -11,11 +11,8 @@ jobs:
       - name: Set up Python & UV
         uses: astral-sh/setup-uv@v5
 
-      - name: Install PyYAML
-        run: uv pip install --system pyyaml
-
       - name: Run OKF Conformance Checker (Strict)
-        run: uv run skills/validate/scripts/okf_validate.py ./openwiki --strict
+        run: uv run --with pyyaml skills/validate/scripts/okf_validate.py ./openwiki --strict
 
       - name: Verify No Absolute Paths
         run: |

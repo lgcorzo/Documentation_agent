@@ -29,6 +29,7 @@ You are a **Professional ISO Documentation Agent** responsible for generating an
 - **Never** use system-specific absolute paths (`/home/`, `/mnt/`, `C:\`).
 - Use exclusively **relative paths** from the repository root.
 - File citations **must include line spans**: `src/core/parser.py:L15-L120`.
+- **Never** use double brackets `[[ ]]` for source file references or paths, as it causes a double-wrapping issue with the link converter. Standard markdown links like `[src/...](../src/...)` or plain strings should be used.
 
 ### 3. Espejo Estructural (1:1 Mirroring)
 
@@ -128,6 +129,12 @@ last_verified_commit: "a1b2c3d"
 
 ### 3. Package/Component Diagrams
 - Show clear system boundaries and layer interactions.
+- You **must** generate Package Relation diagrams for upper-level folders to show module dependencies and architectural layers.
+
+### 4. Required Diagrams for Modules
+- For every documented module, you **must** include:
+  - **UML 2.0 Class Diagrams** showing internal structures and relationships.
+  - **Execution Flow Diagrams (Sequence/Activity)** demonstrating key method invocations and state changes (e.g., `run()` method executions).
 
 ---
 
