@@ -27,22 +27,15 @@ last_verified_commit: "N/A"
 | Step | Command | Output Artifact | Failure Mode |
 |:---|:---|:---|:---|
 | 1. Install `uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `~/.local/bin/uv` | Network error |
-| 2. Install CRG | `uv tool install code-review-graph` | `code-review-graph` CLI | Package resolution |
-| 3. Install Graphify | `uv tool install graphifyy` (fallback from `graphify`) | `graphify` CLI | Package naming variation |
-| 4. Install Ollama | `curl -fsSL https://ollama.com/install.sh \| sh` | `ollama` service | Network error |
-| 5. Pull embeddings | `ollama pull nomic-embed-text` | Model weights | Ollama not running |
-| 6. Register MCP | `code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions` | `.vscode/mcp.json` | Platform mismatch |
-| 7. Install hooks | `cp hooks/* .git/hooks/` + `chmod +x` | Executable hooks | Missing `.git/` |
-| 8. Build graph | `code-review-graph build` | `.code-review-graph/graph.db` | No source files |
-| 9. Generate embeddings | `uvx --from "code-review-graph[embeddings]" code-review-graph embed` | Embedding vectors | Missing `sentence-transformers` |
-| 10. Graphify update | `graphify update .` | `graphify-out/graph.json` | No parseable files |
-| 11. Graphify cluster | `graphify cluster-only .` | `graphify-out/GRAPH_REPORT.md` | No graph data |
+| 2. Install Graphify | `uv tool install graphifyy` (fallback from `graphify`) | `graphify` CLI | Package naming variation |
+| 3. Install hooks | `cp hooks/* .git/hooks/` + `chmod +x` | Executable hooks | Missing `.git/` |
+| 4. Graphify update | `graphify update .` | `graphify-out/graph.json` | No parseable files |
+| 5. Graphify cluster | `graphify cluster-only .` | `graphify-out/GRAPH_REPORT.md` | No graph data |
 
 #### Environment Variables Set
 
 | Variable | Value | Persistence |
 |:---|:---|:---|
-| `CRG_TOOLS` | `semantic_search_nodes_tool,query_graph_tool,get_impact_radius_tool,get_review_context_tool` | `~/.bashrc` or `~/.zshrc` |
 | `PATH` | `$HOME/.local/bin:$PATH` | `~/.bashrc` or `~/.zshrc` |
 
 ---
@@ -55,22 +48,22 @@ last_verified_commit: "N/A"
 * **Trigger:** Every `git commit`
 * **Behavior:** Cross-platform (Bash detects OS, delegates to PowerShell on Windows).
 
-| OS | CRG Action | Graphify Action | Bridge Event |
-|:---|:---|:---|:---|
-| Linux | `code-review-graph update` (background, 5min timeout) | `graphify update .` (background, 5min timeout) | `post_commit_graph_update` logged |
-| Windows | Delegates to `update-graph.ps1` (hidden window) | Included in PS1 script | N/A (PS1 handles) |
+| OS | Graphify Action | Bridge Event |
+|:---|:---|:---|
+| Linux | `graphify update .` (background, 5min timeout) | `post_commit_graph_update` logged |
+| Windows | Delegates to `update-graph.ps1` (hidden window) | N/A (PS1 handles) |
 
-**Guard:** Skips if `code-review-graph` or `graphify` processes already running.
+**Guard:** Skips if `graphify` process is already running.
 
 ### `hooks/post-checkout`
 
 * **Source:** `hooks/post-checkout:L1-L62`
 * **Trigger:** Every `git checkout` (branch switch only, `$3 == 1`).
 
-| Changed Files | CRG Action | Graphify Action |
-|:---|:---|:---|
-| ≤ 5 | Incremental `update` | Incremental `update .` |
-| > 5 | Full `build` | Forced `update .` (`GRAPHIFY_FORCE=true`) |
+| Changed Files | Graphify Action |
+|:---|:---|
+| ≤ 5 | Incremental `update .` |
+| > 5 | Forced `update .` (`GRAPHIFY_FORCE=true`) |
 
 ### `hooks/log-bridge-event.sh`
 

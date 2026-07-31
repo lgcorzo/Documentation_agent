@@ -23,9 +23,7 @@ else
 fi
 
 # 2. Instalar herramientas globales de Python utilizando uv
-echo -e "${YELLOW}Instalando code-review-graph y graphify...${NC}"
-uv tool install code-review-graph
-
+echo -e "${YELLOW}Instalando graphify...${NC}"
 # Graphify package naming may vary across releases/channels.
 if ! uv tool install graphify; then
     echo -e "${YELLOW}No se pudo instalar 'graphify'. Intentando con 'graphifyy'...${NC}"
@@ -35,55 +33,11 @@ fi
 # Asegurar que el PATH del usuario incluya el directorio de herramientas de uv
 export PATH="$HOME/.local/bin:$PATH"
 
-# 3. Verificar/Instalar Ollama
-echo -e "${YELLOW}Verificando instalación de Ollama...${NC}"
-if ! command -v ollama &> /dev/null; then
-    echo -e "${CYAN}Ollama no detectado. Instalando vía script oficial...${NC}"
-    curl -fsSL https://ollama.com/install.sh | sh
-else
-    echo -e "${GREEN}¡Ollama ya está instalado!${NC}"
-fi
-
-# Asegurar que Ollama esté corriendo
-if ! pgrep -x "ollama" > /dev/null; then
-    echo -e "${CYAN}Iniciando servicio de Ollama...${NC}"
-    if command -v systemctl &> /dev/null; then
-        sudo systemctl start ollama
-    else
-        nohup ollama serve > /dev/null 2>&1 &
-    fi
-    sleep 5
-fi
-
-# Descargar modelo de embeddings
-echo -e "${CYAN}Descargando modelo de embeddings 'nomic-embed-text' en Ollama...${NC}"
-ollama pull nomic-embed-text
-
-# 4. Configurar variable de entorno CRG_TOOLS (Optimización de tokens para Copilot)
-CRG_TOOLS_VAL="semantic_search_nodes_tool,query_graph_tool,get_impact_radius_tool,get_review_context_tool"
-export CRG_TOOLS="$CRG_TOOLS_VAL"
-
-# Persistir la variable de entorno para el usuario
-SHELL_RC="$HOME/.bashrc"
-[ -n "$ZSH_VERSION" ] && SHELL_RC="$HOME/.zshrc"
-
-if ! grep -q "CRG_TOOLS" "$SHELL_RC"; then
-    echo -e "\n# Ecosistema DeepWiki Documenter" >> "$SHELL_RC"
-    echo "export CRG_TOOLS=\"$CRG_TOOLS_VAL\"" >> "$SHELL_RC"
-    echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> "$SHELL_RC"
-    echo -e "${GREEN}Variable CRG_TOOLS y PATH añadidas a $SHELL_RC.${NC}"
-fi
-
-# 5. Registrar herramientas MCP en el entorno local
-echo -e "${YELLOW}Registrando herramientas en los editores compatibles...${NC}"
-code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions
-
-# 6. Verificar archivos de configuración esperados
+# 3. Verificar archivos de configuración esperados
 echo -e "${YELLOW}Verificando archivos ignore en la raíz del repositorio...${NC}"
 [ ! -f "./.graphifyignore" ] && echo -e "${YELLOW}ADVERTENCIA: Falta el archivo .graphifyignore en la raíz del repositorio.${NC}"
-[ ! -f "./.code-review-graphignore" ] && echo -e "${YELLOW}ADVERTENCIA: Falta el archivo .code-review-graphignore en la raíz del repositorio.${NC}"
 
-# 7. Instalar Git Hooks locales
+# 4. Instalar Git Hooks locales
 if [ -d ".git" ]; then
     echo -e "${YELLOW}Instalando Git Hooks para automatizar la wiki...${NC}"
     HOOKS_DIR=".git/hooks"
@@ -101,13 +55,7 @@ else
     echo -e "${YELLOW}ADVERTENCIA: No se detectó un directorio '.git'. Asegúrate de estar en la raíz de un repositorio Git para instalar los hooks.${NC}"
 fi
 
-# 8. Construcción del Grafo y Generación de Embeddings iniciales
-echo -e "${CYAN}Construyendo el mapa estructural del código (build)...${NC}"
-code-review-graph build
-
-echo -e "${CYAN}Generando vectores semánticos con Ollama (embed)...${NC}"
-uvx --from "code-review-graph[embeddings]" code-review-graph embed
-
+# 5. Sincronizando skills de Graphify para evitar desfases de versión...
 echo -e "${CYAN}Sincronizando skills de Graphify para evitar desfases de versión...${NC}"
 graphify install --platform copilot
 
@@ -119,4 +67,4 @@ graphify cluster-only .
 
 echo -e "${GREEN}=== ¡Instalación Completada con Éxito! ===${NC}"
 echo -e "${GREEN}GitHub Copilot ahora cuenta con búsquedas semánticas locales y mantiene tu DeepWiki viva.${NC}"
-echo -e "${CYAN}Nota: Por favor, ejecuta 'source $SHELL_RC' en tus terminales abiertas para aplicar los cambios de variables.${NC}"
+echo -e "${CYAN}Nota: Por favor, ejecuta 'source $HOME/.bashrc' (o tu archivo de configuración de shell) para aplicar los cambios de variables.${NC}"

@@ -1,14 +1,6 @@
 # ====================================================================
-# Ecosistema de Documentación Local (DeepWiki / CRG / Graphify)
+# Ecosistema de Documentación Local (DeepWiki / Graphify)
 # ====================================================================
-# Ignorar bases de datos locales indexadas por CRG
-*.db
-*.db-journal
-*.sqlite
-
-# Ignorar la bóveda de documentación autogenerada de Graphify
-/ai-vault/
-
 # Ignorar logs de reconstrucción
 *.log
 graphify-rebuild.log
@@ -27,7 +19,6 @@ target/
 .uv/
 
 # Artefactos locales y grafos de conocimiento
-.code-review-graph/
 graphify-out/
 .specify/state.lock
 superpowers-handoff.json

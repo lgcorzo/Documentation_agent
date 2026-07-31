@@ -60,7 +60,6 @@ Adopt lightweight local AST CLI tools (`graphify update .`, `pyreverse -o dot`, 
 
 ## 7. Validation Evidence
 
-See [[../../../Documents/Wiki/EVIDENCE.md]] for validated execution evidence including:
-- `graphify update .` producing 432 nodes, 578 edges, 37 communities.
-- `code-review-graph build && code-review-graph wiki --force` producing 8 wiki pages.
-- Package naming edge case (`graphify` → `graphifyy`) detected and mitigated.
+Graphify has been validated to execute successfully:
+- `graphify update .` produces structural knowledge graphs, HTML visualization, and community reports in seconds.
+- Conformance validation checks pass on generated OpenWiki Markdown documentation.

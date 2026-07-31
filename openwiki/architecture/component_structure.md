@@ -27,8 +27,8 @@ flowchart TD
     end
 
     subgraph "Layer 2: Structural Memory"
+    subgraph "Layer 2: Structural Memory"
         GR["Graphify<br/>(graphify-out/)"]
-        CR["code-review-graph<br/>(.code-review-graph/)"]
         HK["Git Hooks<br/>(hooks/)"]
     end
 
@@ -47,9 +47,7 @@ flowchart TD
     SP --> BR
     BR --> HK
     HK --> GR
-    HK --> CR
     GR --> AS
-    CR --> AS
     AS --> OW
     VL --> OW
     GA --> VL
@@ -74,7 +72,6 @@ flowchart TD
 | Component | Location | Responsibility |
 |:---|:---|:---|
 | **Graphify AST Graph** | `graphify-out/` (generated) | AST dependency graph, community detection, knowledge wiki |
-| **CRG SQLite Graph** | `.code-review-graph/` (generated) | SQLite-backed code graph + MCP server |
 | **Post-Commit Hook** | `hooks/post-commit` | Cross-platform hook triggering background graph updates |
 | **Post-Checkout Hook** | `hooks/post-checkout` | Incremental/full rebuild on branch switch |
 | **Bridge Event Logger** | `hooks/log-bridge-event.sh` | Structured event logging for ISO 15289 traceability |
@@ -94,7 +91,7 @@ flowchart TD
 |:---|:---|:---|
 | **Validate Docs Workflow** | `.github/workflows/validate-docs.yml` | OKF conformance validation on push/PR |
 | **OpenWiki Update Workflow** | `.github/workflows/openwiki-update.yml` | Scheduled/manual OpenWiki regeneration via LLM |
-| **Install Script (Linux)** | `install.sh` | Automated environment setup (uv, CRG, Graphify, Ollama, hooks) |
+| **Install Script (Linux)** | `install.sh` | Automated environment setup (uv, Graphify, hooks) |
 | **Install Script (Windows)** | `install.ps1` | PowerShell equivalent of Linux installer |
 | **Install-into-Repo Wrappers** | `install-into-repo.sh`, `install-into-repo.ps1` | Deploy ecosystem into target repositories |
 
@@ -127,14 +124,6 @@ classDiagram
         +update(path: str) graph.json
         +cluster_only(path: str) GRAPH_REPORT.md
         +query(question: str) Subgraph
-    }
-
-    class CodeReviewGraph {
-        <<structural-memory>>
-        +build() graph.db
-        +update() graph.db
-        +embed() vectors
-        +semantic_search(query: str) Results
     }
 
     class GitHooks {
@@ -171,10 +160,8 @@ classDiagram
     SpecKit --> SuperpowersBridge : creates handoff
     SuperpowersBridge --> GitHooks : triggers
     GitHooks --> Graphify : invokes update
-    GitHooks --> CodeReviewGraph : invokes build
     GitHooks --> SuperpowersBridge : logs events
     AgentSkills --> Graphify : reads AST data
-    AgentSkills --> CodeReviewGraph : queries graph
     AgentSkills --> OpenWiki : generates pages
     OKFValidator --> OpenWiki : validates
 ```

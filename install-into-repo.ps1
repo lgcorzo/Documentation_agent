@@ -25,7 +25,6 @@ $copyItems = @(
     ".agents",
     "hooks",
     ".graphifyignore",
-    ".code-review-graphignore",
     "install.ps1"
 )
 
@@ -63,8 +62,6 @@ $requiredPaths = @(
     ".vscode\mcp.json",
     ".git\hooks\post-commit",
     ".git\hooks\post-checkout",
-    ".code-review-graph\graph.db",
-    ".code-review-graph\wiki",
     "graphify-out\GRAPH_REPORT.md"
 )
 

@@ -61,4 +61,24 @@ last_verified_commit: "N/A"
 
 ---
 
+## Entry 002 — 2026-07-31: Code-Review-Graph (CRG) & Ollama Elimination
+
+| Field | Value |
+|:---|:---|
+| **Date** | 2026-07-31T18:40:00Z |
+| **Mode** | Refactor Cleanup |
+| **Agent** | Antigravity IDE |
+| **Trigger** | User request to eliminate code-review dependencies |
+| **Commit SHA** | N/A (pre-commit) |
+
+### Subsystems Refactored
+
+- **Installers**: Removed `code-review-graph` installation and registration commands, Ollama download/serving scripts, and `CRG_TOOLS` environment variables in `install.sh`, `install.ps1`, `install-into-repo.sh`, and `install-into-repo.ps1`.
+- **Git Hooks**: Cleaned up `post-commit`, `post-checkout`, `update-graph.ps1`, and `update-graph-checkout.ps1` to only trigger Graphify updates and exclude CRG checks/builds.
+- **Configurations**: Deleted `.code-review-graphignore` and removed `.code-review-graph/` from `.gitignore` and `.specify/bridge/bridge-config.json`.
+- **OpenWiki Pages**: Updated architecture documents (`iso_42010_overview.md`, `system_context.md`, `component_structure.md`, `adr_001_ast_engine.md`, `api_contracts.md`, `iso_25010_quality.md`, and `developer_guide.md`) to align with the single-tool AST model (Graphify + Pyreverse).
+- **Skills**: Removed references to CRG in `uml2-okf-documenter/SKILL.md`.
+
+---
+
 *End of current log. New entries will be appended below as documentation is updated.*

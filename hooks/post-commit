@@ -11,27 +11,12 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; t
 else
     # --- ENTORNO UBUNTU / LINUX ---
     # Guardia: Evitar superposición si ya hay una actualización corriendo
-    if pgrep -f "code-review-graph" > /dev/null || pgrep -f "graphify" > /dev/null; then
+    if pgrep -f "graphify" > /dev/null; then
         echo "Actualización de grafo ya en ejecución en Linux. Saltando..."
         exit 0
     fi
 
-    # Asegurar que Ollama esté corriendo si se usa en Linux
-    if ! pgrep -x "ollama" > /dev/null; then
-        if command -v ollama > /dev/null 2>&1; then
-            nohup ollama serve > /dev/null 2>&1 &
-            sleep 3
-        fi
-    fi
-
     # Ejecutar actualizaciones en segundo plano (con límite de tiempo de 5 min)
-    # Intenta usar la herramienta instalada globalmente, si no, usa uvx al vuelo
-    if command -v code-review-graph > /dev/null 2>&1; then
-        nohup timeout 300 code-review-graph update > /dev/null 2>&1 &
-    elif command -v uvx > /dev/null 2>&1; then
-        nohup timeout 300 uvx code-review-graph update > /dev/null 2>&1 &
-    fi
-
     if command -v graphify > /dev/null 2>&1; then
         nohup timeout 300 graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
     elif command -v uvx > /dev/null 2>&1; then
@@ -41,7 +26,7 @@ else
     # Log bridge event for ISO 15289 traceability
     REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
     if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/hooks/log-bridge-event.sh" ]; then
-        bash "$REPO_ROOT/hooks/log-bridge-event.sh" "post_commit_graph_update" "graphify and CRG triggered"
+        bash "$REPO_ROOT/hooks/log-bridge-event.sh" "post_commit_graph_update" "graphify update triggered"
     fi
 fi
 

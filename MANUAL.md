@@ -14,9 +14,8 @@ flowchart TD
         A["Planificación / Tareas<br/>(.specify/)"] -->|"Handoff Lock"| B["Ciclo TDD / Ejecución<br/>(Superpowers)"]
     end
 
-    subgraph "Capa de Memoria Estructural (Graphify/CRG)"
-        C["Git Hooks<br/>(post-commit/checkout)"] -->|"Update"| D["Grafo AST SQLite<br/>(.code-review-graph/)"]
-        C -->|"Update"| E["Grafo AST Markdown<br/>(graphify-out/)"]
+    subgraph "Capa de Memoria Estructural (Graphify)"
+        C["Git Hooks<br/>(post-commit/checkout)"] -->|"Update"| E["Grafo AST Markdown<br/>(graphify-out/)"]
     end
 
     subgraph "Capa de Documentación (OpenWiki/OKF)"
@@ -26,7 +25,6 @@ flowchart TD
 
     B -->|"Commits locales"| C
     E -->|"AST input"| F
-    D -->|"Búsquedas semánticas"| F
 ```
 
 ---
@@ -39,7 +37,6 @@ Asegúrate de contar con las siguientes herramientas en tu sistema local:
 * **Git** instalado.
 * **Python 3.10+** (o el gestor `uv` se encargará de descargarlo).
 * **Node.js 22+** (solo requerido para el motor de generación en CI/CD).
-* **Ollama** (opcional, solo si deseas búsquedas semánticas vectoriales con embeddings locales).
 
 ### Instalación en un Nuevo Proyecto (Destino)
 
@@ -61,9 +58,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 ### ¿Qué hace el instalador por ti?
 1. Copia la carpeta de habilidades agénticas `.agents/` con los motores de documentación.
 2. Configura los **Git Hooks** en `.git/hooks/` para automatizar la sincronización.
-3. Instala localmente `uv`, `code-review-graph` y el motor `graphify`.
-4. Crea la base de datos estructural del código (`graph.db`) y genera el primer reporte visual (`graphify-out/`).
-5. Configura e inyecta las variables de entorno de optimización de tokens para el IDE.
+3. Instala localmente `uv` y el motor `graphify`.
+4. Genera el primer reporte visual (`graphify-out/`).
 
 ---
 

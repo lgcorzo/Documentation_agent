@@ -18,7 +18,7 @@ last_verified_commit: "N/A"
 * **System Name:** Documentation_agent (DeepWiki Documenter Ecosystem)
 * **Target Environment:** Python 3.10+ / Bash / PowerShell — Linux & Windows
 * **Primary Source Repository:** `lgcorzo/Documentation_agent`
-* **Purpose:** Automated software documentation ecosystem that generates and maintains ISO-compliant architecture documentation using local AST extraction (Graphify, Pyreverse), knowledge graphs (CRG), and agent skills (OKF v0.2).
+* **Purpose:** Automated software documentation ecosystem that generates and maintains ISO-compliant architecture documentation using local AST extraction (Graphify, Pyreverse) and agent skills (OKF v0.2).
 
 ## 2. Stakeholder Perspectives & Concerns Matrix
 

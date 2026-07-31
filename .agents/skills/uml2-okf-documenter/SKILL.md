@@ -364,7 +364,7 @@ All generated OKF pages must include provenance metadata in the YAML frontmatter
 When available, read `.specify/bridge/bridge-events.jsonl` to:
 1. Determine the latest `post_commit_graph_update` event for the current commit SHA.
 2. Populate the `last_verified_commit` field from the bridge event's `commit` value.
-3. Verify that Graphify/CRG have been run for the current code state before generating documentation.
+3. Verify that Graphify has been run for the current code state before generating documentation.
 
 ## Forward-Reference Link Mandate (ISO 42010 AD Coherence)
 

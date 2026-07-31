@@ -8,26 +8,10 @@ if ($args.Count -lt 3 -or $args[2] -ne "1") {
 }
 
 # 1. Guardia de Procesos
-$crgProcess = Get-Process -Name "code-review-graph" -ErrorAction SilentlyContinue
 $graphifyProcess = Get-Process -Name "graphify" -ErrorAction SilentlyContinue
 
-if ($crgProcess -or $graphifyProcess) {
+if ($graphifyProcess) {
     exit 0
-}
-
-# 2. Asegurar que Ollama está activo
-$ollamaProcess = Get-Process -Name "ollama" -ErrorAction SilentlyContinue
-if (-not $ollamaProcess) {
-    $ollamaCheck = Get-Command ollama -ErrorAction SilentlyContinue
-    if ($ollamaCheck) {
-        $ollamaInfo = New-Object System.Diagnostics.ProcessStartInfo
-        $ollamaInfo.FileName = "ollama"
-        $ollamaInfo.Arguments = "serve"
-        $ollamaInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden
-        $ollamaInfo.CreateNoWindow = $true
-        [System.Diagnostics.Process]::Start($ollamaInfo) | Out-Null
-        Start-Sleep -Seconds 3
-    }
 }
 
 # Función para iniciar procesos de forma silenciosa
@@ -55,7 +39,7 @@ function Start-BgProcess {
     }
 }
 
-# 3. Contar archivos modificados
+# 2. Contar archivos modificados
 $changedFilesCount = 0
 try {
     $diff = git diff --name-only $args[0] $args[1]
@@ -64,18 +48,11 @@ try {
     $changedFilesCount = 0
 }
 
-$crgGlobal = Get-Command code-review-graph -ErrorAction SilentlyContinue
 $graphifyGlobal = Get-Command graphify -ErrorAction SilentlyContinue
 $uvCheck = Get-Command uv -ErrorAction SilentlyContinue
 
 if ($changedFilesCount -gt 5) {
     # --- CAMBIO GRANDE: Reconstrucción Completa (build) ---
-    if ($crgGlobal) {
-        Start-BgProcess -FileName "code-review-graph" -Arguments "build"
-    } elseif ($uvCheck) {
-        Start-BgProcess -FileName "uvx" -Arguments "code-review-graph build"
-    }
-
     if ($graphifyGlobal) {
         $envMap = @{ "GRAPHIFY_FORCE" = "true" }
         Start-BgProcess -FileName "graphify" -Arguments "update ." -EnvVars $envMap
@@ -85,12 +62,6 @@ if ($changedFilesCount -gt 5) {
     }
 } else {
     # --- CAMBIO PEQUEÑO: Actualización Incremental (update) ---
-    if ($crgGlobal) {
-        Start-BgProcess -FileName "code-review-graph" -Arguments "update"
-    } elseif ($uvCheck) {
-        Start-BgProcess -FileName "uvx" -Arguments "code-review-graph update"
-    }
-
     if ($graphifyGlobal) {
         Start-BgProcess -FileName "graphify" -Arguments "update ."
     } elseif ($uvCheck) {

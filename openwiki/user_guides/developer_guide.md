@@ -40,10 +40,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 ### What Gets Installed
 
 1. `uv` — Python package manager
-2. `code-review-graph` — AST graph database + MCP server
-3. `graphify` — Knowledge graph with community detection
-4. `Ollama` + `nomic-embed-text` — Local semantic embeddings (optional)
-5. **Git Hooks** — Automated graph updates on every commit/checkout
+2. `graphify` — Knowledge graph with community detection
+3. **Git Hooks** — Automated graph updates on every commit/checkout
 
 ## 2. How It Works
 
@@ -55,13 +53,11 @@ sequenceDiagram
     participant Git as Git
     participant Hook as Post-Commit Hook
     participant GR as Graphify
-    participant CRG as code-review-graph
     participant Bridge as Bridge Events
 
     Dev->>Git: git commit
     Git->>Hook: Trigger post-commit
     Hook->>GR: graphify update . (background)
-    Hook->>CRG: code-review-graph update (background)
     Hook->>Bridge: Log bridge event
     Note over Dev: Developer continues working<br/>No wait required
 ```
@@ -160,7 +156,6 @@ Some environments expose the package as `graphifyy` while the CLI command remain
 
 Force a full rebuild:
 ```bash
-code-review-graph build
 graphify update .
 graphify cluster-only .
 ```

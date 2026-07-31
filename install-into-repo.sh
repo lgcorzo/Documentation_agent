@@ -27,7 +27,6 @@ copy_items=(
   ".agents"
   "hooks"
   ".graphifyignore"
-  ".code-review-graphignore"
   "install.sh"
 )
 
@@ -60,8 +59,6 @@ required_paths=(
   ".vscode/mcp.json"
   ".git/hooks/post-commit"
   ".git/hooks/post-checkout"
-  ".code-review-graph/graph.db"
-  ".code-review-graph/wiki"
   "graphify-out/GRAPH_REPORT.md"
 )
 

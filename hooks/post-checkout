@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; t
 else
     # --- ENTORNO UBUNTU / LINUX ---
     # Guardia: Evitar superposición si ya hay una actualización corriendo
-    if pgrep -f "code-review-graph" > /dev/null || pgrep -f "graphify" > /dev/null; then
+    if pgrep -f "graphify" > /dev/null; then
         echo "Actualización de grafo ya en ejecución en Linux. Saltando..."
         exit 0
     fi
@@ -29,12 +29,6 @@ else
 
     if [ "$CHANGED_FILES" -gt 5 ]; then
         # Cambio grande: Reconstrucción completa (build)
-        if command -v code-review-graph > /dev/null 2>&1; then
-            nohup timeout 300 code-review-graph build > /dev/null 2>&1 &
-        elif command -v uvx > /dev/null 2>&1; then
-            nohup timeout 300 uvx code-review-graph build > /dev/null 2>&1 &
-        fi
-
         if command -v graphify > /dev/null 2>&1; then
             export GRAPHIFY_FORCE=true
             nohup timeout 300 graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
@@ -44,12 +38,6 @@ else
         fi
     else
         # Cambio pequeño: Actualización incremental rápida
-        if command -v code-review-graph > /dev/null 2>&1; then
-            nohup timeout 300 code-review-graph update > /dev/null 2>&1 &
-        elif command -v uvx > /dev/null 2>&1; then
-            nohup timeout 300 uvx code-review-graph update > /dev/null 2>&1 &
-        fi
-
         if command -v graphify > /dev/null 2>&1; then
             nohup timeout 300 graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
         elif command -v uvx > /dev/null 2>&1; then

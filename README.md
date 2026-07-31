@@ -11,20 +11,16 @@ El agente no solo documenta el código fuente, sino que genera y mantiene viva u
 ```mermaid
 graph TD
     A[Desarrollador escribe código] -->|Git Commit / Checkout| B(Git Hooks)
-    B -->|Segundo plano| C[code-review-graph - SQLite & Ollama]
     B -->|Segundo plano| D[graphify - Markdown Vault]
-    C -->|Búsqueda Semántica FTS5 / AST| E[Servidor MCP Local]
-    D -->|Wikilinks interconectados| F[Bóveda ai-vault / Obsidian]
-    E -->|Contexto Enriquecido| G[GitHub Copilot Agent Skill]
+    D -->|Wikilinks interconectados| F[Bóveda Graphify / Obsidian]
+    F -->|Contexto Enriquecido| G[GitHub Copilot Agent Skill]
     G -->|Genera Documentación Clara| A
 ```
 
 ### Componentes Clave:
-1. **El Cerebro (`.agentskills/`):** El archivo `SKILL.md` define las directrices y reglas del agente, ordenándole estructurar la documentación como una wiki interconectada mediante Wikilinks (`[[Clase]]`) e identificando el radio de impacto de los cambios.
-2. **El Grafo Estructural (`code-review-graph`):** Herramienta que analiza el Árbol de Sintaxis Abstracta (AST) de tu proyecto y lo guarda en una base de datos local SQLite. Expone herramientas MCP al agente para entender dependencias.
-3. **El Motor Semántico (`Ollama` & `nomic-embed-text`):** Corre localmente y genera embeddings del código fuente, permitiendo al agente realizar búsquedas conceptuales (ej. buscar dónde se procesan pagos sin depender de nombres exactos de funciones).
-4. **La Deep Wiki (`graphify`):** Genera artefactos de conocimiento en `./graphify-out/` (`graph.json`, `graph.html`, `GRAPH_REPORT.md`) para navegación técnica y análisis de comunidades.
-5. **Los Automatizadores (`hooks/`):** Git Hooks (`post-commit` y `post-checkout`) que ejecutan de forma invisible y paralela las actualizaciones de la base de datos y la wiki al programar, asegurando que el agente nunca trabaje con información obsoleta.
+1. **El Cerebro (`.agents/skills/`):** Define las directrices y reglas del agente, ordenándole estructurar la documentación como una wiki interconectada mediante Wikilinks (`[[Clase]]`) e identificando el radio de impacto de los cambios.
+2. **La Deep Wiki (`graphify`):** Genera artefactos de conocimiento en `./graphify-out/` (`graph.json`, `graph.html`, `GRAPH_REPORT.md`) para navegación técnica y análisis de comunidades basándose en el Árbol de Sintaxis Abstracta (AST).
+3. **Los Automatizadores (`hooks/`):** Git Hooks (`post-commit` y `post-checkout`) que ejecutan de forma invisible y paralela las actualizaciones de la wiki al programar, asegurando que el agente nunca trabaje con información obsoleta.
 
 ---
 
@@ -33,7 +29,6 @@ graph TD
 - **Git** instalado.
 - **Python** (versión 3.10 o superior) - Opcional si se utiliza `uv` como gestor de paquetes.
 - **uv** (Administrador de paquetes de Python ultra rápido. Si no lo tienes, los instaladores lo configurarán por ti).
-- **Ollama** (Para búsquedas semánticas locales de embeddings).
 
 ---
 
@@ -78,7 +73,7 @@ chmod +x install-into-repo.sh
 ```
 
 Estos scripts:
-- Copian automáticamente `.agentskills`, `hooks`, `.graphifyignore`, `.code-review-graphignore` e instalador.
+- Copian automáticamente `.agents`, `hooks`, `.graphifyignore` e instalador.
 - Ejecutan el instalador dentro del repositorio destino.
 - Reducen errores por rutas, copias parciales o prompts interactivos.
 
@@ -86,10 +81,8 @@ Estos scripts:
 
 Los instaladores (`install.ps1` y `install.sh`) están preparados para evitar errores comunes:
 
-- Ejecutan `code-review-graph install -y --platform copilot --no-skills --no-hooks --no-instructions` para evitar prompts y archivos extra.
 - Instalan configuración solo para GitHub Copilot (`--platform copilot`) para evitar archivos de otras plataformas.
-- No realizan copias del archivo sobre sí mismo para `.graphifyignore` y `.code-review-graphignore`.
-- Generan embeddings usando `uvx --from "code-review-graph[embeddings]" code-review-graph embed`, evitando el error por falta de `sentence-transformers`.
+- No realizan copias del archivo sobre sí mismo para `.graphifyignore`.
 - Ejecutan `graphify install --platform copilot`, luego `graphify update .` y `graphify cluster-only .` para mantener artefactos consistentes.
 
 ### Problemas detectados y corregidos (validados en SpaceInvaders)
@@ -101,8 +94,6 @@ Los instaladores (`install.ps1` y `install.sh`) están preparados para evitar er
     - `.vscode/mcp.json`
     - `.git/hooks/post-commit`
     - `.git/hooks/post-checkout`
-    - `.code-review-graph/graph.db`
-    - `.code-review-graph/wiki`
     - `graphify-out/GRAPH_REPORT.md`
 
 ---
@@ -119,10 +110,9 @@ La sincronización se realiza de manera 100% transparente para el desarrollador 
 ## 📂 Trabajo en Equipo y `.gitignore`
 
 Por diseño y mejores prácticas del equipo, los siguientes elementos están añadidos al archivo `.gitignore`:
-- **Las bases de datos SQLite (`*.db`):** Contienen rutas absolutas locales del sistema del desarrollador e índices locales de Ollama.
 - **La carpeta de salida (`/graphify-out/`):** Al ser autogenerada tras cada commit, subirla al repositorio crearía constantes conflictos de mezcla (merge conflicts) y ensuciaría el historial de Git.
 
-Cada desarrollador que clone el repositorio simplemente ejecuta el instalador una sola vez (`install.ps1` o `install.sh`) para compilar su propia base de datos y wiki local en segundos.
+Cada desarrollador que clone el repositorio simplemente ejecuta el instalador una sola vez (`install.ps1` o `install.sh`) para compilar su propia wiki local en segundos.
 
 ---
 
@@ -131,7 +121,6 @@ Cada desarrollador que clone el repositorio simplemente ejecuta el instalador un
 Para navegar visualmente por la arquitectura del proyecto:
 1. Descarga e instala [Obsidian](https://obsidian.md/).
 2. Abre el archivo `graphify-out/graph.html` para navegación interactiva inmediata.
-3. Si quieres una wiki Markdown orientada a revisión de cambios, usa `code-review-graph wiki --force` y consulta `.code-review-graph/wiki`.
 
 ## 📈 Project Evolution & Changelog
 
@@ -143,6 +132,7 @@ Para navegar visualmente por la arquitectura del proyecto:
 - **CI/CD Quality Gates**: Replaced the mock validator in `skills/validate/scripts/okf_validate.py` with a strict conformance validation utility verifying frontmatter fields, paths, and Mermaid diagram syntax. Corrected CI workflow config files.
 - **Skills Clean Up**: Consolidated and enhanced skills inside `.agents/skills/` (removed legacy `.agentskills/` duplicates).
 - **Cleanup**: Removed obsolete `Documents/` folder and legacy `.agentskills` directory; updated `AGENTS.md` and `CLAUDE.md` to reference `openwiki/index.md` navigation hub.
+- **Refactor (CRG Removal)**: Completely eliminated `code-review-graph` (CRG) and Ollama local server dependencies from installers, hooks, documentation views, configurations, and skills. The ecosystem now relies solely on local Graphify & Pyreverse AST tools.
 
 ## references 
 
