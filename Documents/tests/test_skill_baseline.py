@@ -1,7 +1,7 @@
 import os
 import yaml
 
-SKILL_PATH = "/mnt/F024B17C24B145FE/Repos/Documentation_agent/.agentskills/uml2-okf-documenter/SKILL.md"
+SKILL_PATH = ".agentskills/uml2-okf-documenter/SKILL.md"
 
 def test_skill_file_exists_and_valid():
     assert os.path.exists(SKILL_PATH), f"Skill file does not exist at {SKILL_PATH}"

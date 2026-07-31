@@ -285,3 +285,7 @@ async def connect(url: str) -> Pool:
     pool = await create_pool(url, max_connections=20)
     return pool
 ```
+## 3. Separación de Soberanía
+- *Spec-Kit* manda en la especificación (`spec.md`, `plan.md`, `tasks.md`).
+- *Superpowers* manda en la ejecución mediante TDD estricto (Red-Green-Refactor).
+- La documentación en `./openwiki/` se rige por el estándar **OKF v0.2** y debe reflejar la realidad del código ("As Is") mediante Pyreverse.
