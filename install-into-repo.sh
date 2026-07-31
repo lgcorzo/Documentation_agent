@@ -56,7 +56,6 @@ echo "Archivos del agente copiados. Ejecutando instalador en destino..."
 
 echo "Verificando instalación en destino..."
 required_paths=(
-  ".vscode/mcp.json"
   ".git/hooks/post-commit"
   ".git/hooks/post-checkout"
   "graphify-out/GRAPH_REPORT.md"

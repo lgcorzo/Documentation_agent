@@ -59,7 +59,6 @@ finally {
 Write-Host "Verificando instalación en destino..." -ForegroundColor Yellow
 
 $requiredPaths = @(
-    ".vscode\mcp.json",
     ".git\hooks\post-commit",
     ".git\hooks\post-checkout",
     "graphify-out\GRAPH_REPORT.md"
