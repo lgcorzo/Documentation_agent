@@ -56,7 +56,7 @@ Adopt lightweight local AST CLI tools (`graphify update .`, `pyreverse -o dot`, 
 - `install.sh:L26-L33` — Graphify installation with naming fallback.
 - `hooks/post-commit:L35-L39` — Background graphify update trigger.
 - `.agents/skills/uml2-okf-documenter/SKILL.md:L54-L59` — Tooling matrix specification.
-- [[Architecture/ComponentStructure]] — Structural Memory components.
+- [Architecture/ComponentStructure](../component_structure.md) — Structural Memory components.
 
 ## 7. Validation Evidence
 

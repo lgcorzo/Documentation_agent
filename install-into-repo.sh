@@ -28,6 +28,7 @@ copy_items=(
   "hooks"
   ".graphifyignore"
   "install.sh"
+  "skills"
 )
 
 for item in "${copy_items[@]}"; do

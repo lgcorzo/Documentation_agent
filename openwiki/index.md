@@ -23,8 +23,8 @@ last_verified_commit: "N/A"
 | Page | ISO Viewpoint | Description |
 |:---|:---|:---|
 | [[Architecture/ISO42010Overview]] | AD Overview | Master viewpoint index, stakeholder matrix, and compliance traceability |
-| [[Architecture/SystemContext]] | Context View | System boundaries, external tool interactions, data flow |
-| [[Architecture/ComponentStructure]] | Component View | Subsystem decomposition, UML 2.0 component diagrams |
+| [Architecture/SystemContext](architecture/system_context.md) | Context View | System boundaries, external tool interactions, data flow |
+| [Architecture/ComponentStructure](architecture/component_structure.md) | Component View | Subsystem decomposition, UML 2.0 component diagrams |
 
 ### Architecture Decision Records (ADRs)
 
@@ -39,7 +39,7 @@ last_verified_commit: "N/A"
 
 | Page | ISO Doc Type | Description |
 |:---|:---|:---|
-| [[Specifications/APIContracts]] | Specification | CLI scripts, Git hooks, validator, and agent skills interface contracts |
+| [Specifications/APIContracts](specifications/api_contracts.md) | Specification | CLI scripts, Git hooks, validator, and agent skills interface contracts |
 
 ---
 
@@ -55,7 +55,7 @@ last_verified_commit: "N/A"
 
 | Page | Audience | Description |
 |:---|:---|:---|
-| [[UserGuides/DeveloperGuide]] | Developers | Installation, onboarding, sovereignty rules, troubleshooting |
+| [UserGuides/DeveloperGuide](user_guides/developer_guide.md) | Developers | Installation, onboarding, sovereignty rules, troubleshooting |
 
 ---
 
@@ -63,7 +63,7 @@ last_verified_commit: "N/A"
 
 | Page | Purpose |
 |:---|:---|
-| [[Logs]] | Incremental audit log and git diff history |
+| [Logs](logs.md) | Incremental audit log and git diff history |
 
 ### Governance Documents (outside wiki)
 

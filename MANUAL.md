@@ -140,6 +140,13 @@ Si deseas refrescar la documentación completa simulando el pipeline de integrac
    openwiki code --update --print
    ```
 
+4. **Conversión de Enlaces (Opcional en local)**:
+   Para que los enlaces generados (`[[WikiLinks]]`) y referencias de archivos (`src/...`) sean clickables en tu IDE, corre el convertidor de enlaces:
+   ```bash
+   python3 skills/validate/scripts/convert_links.py
+   ```
+   *(Este paso se ejecuta automáticamente en el pipeline de CI/CD para garantizar que los Pull Requests de la wiki contengan únicamente enlaces Markdown estándar clickables).*
+
 ---
 
 ## 🔒 5. Reglas de Soberanía (No Negociables)

@@ -24,17 +24,17 @@ last_verified_commit: "N/A"
 
 | Stakeholder Persona | Primary Concerns | Framing ISO Viewpoint | Governed Wiki Page |
 |:---|:---|:---|:---|
-| **System Architect** | System modularity, dependency boundaries, AST tool integration | Component View | [[Architecture/ComponentStructure]] |
+| **System Architect** | System modularity, dependency boundaries, AST tool integration | Component View | [Architecture/ComponentStructure](component_structure.md) |
 | **Security Officer** | No external code exfiltration, local-only processing, secrets management | Security View | [[Architecture/SecurityView]] |
 | **Lead Developer** | Execution flows, hook triggers, agent skill contracts | Sequence View | [[Architecture/RuntimeSequences]] |
 | **DevOps Lead** | CI/CD pipelines, Git hooks, automated graph updates | Deployment View | [[Architecture/DeploymentView]] |
 | **ISO Compliance Auditor** | Traceability, provenance, AD coherence, lifecycle information items | Quality View | [[Quality/ISO25010Quality]] |
-| **Documentation Consumer** | Accurate, up-to-date, navigable documentation | Context View | [[Architecture/SystemContext]] |
+| **Documentation Consumer** | Accurate, up-to-date, navigable documentation | Context View | [Architecture/SystemContext](system_context.md) |
 
 ## 3. Viewpoints Framework & Index
 
-- 🌐 [[Architecture/SystemContext]] — Context View: System boundaries, external tool dependencies, and installation workflows.
-- 📦 [[Architecture/ComponentStructure]] — Component View: Internal subsystem decomposition and UML 2.0 component diagrams.
+- 🌐 [Architecture/SystemContext](system_context.md) — Context View: System boundaries, external tool dependencies, and installation workflows.
+- 📦 [Architecture/ComponentStructure](component_structure.md) — Component View: Internal subsystem decomposition and UML 2.0 component diagrams.
 - 🔄 [[Architecture/RuntimeSequences]] — Sequence View: Git hook trigger flows, agent execution sequences.
 - 🚀 [[Architecture/DeploymentView]] — Deployment View: CI/CD pipeline structure, GitHub Actions workflows.
 - 🔐 [[Architecture/SecurityView]] — Security View: Local-first processing guarantees, secrets management.

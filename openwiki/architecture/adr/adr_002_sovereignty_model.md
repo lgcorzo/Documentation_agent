@@ -67,6 +67,6 @@ A **Bridge** (`.specify/bridge/`) mediates all cross-domain state transitions. D
 
 ## 7. Forward References
 
-- [[Architecture/ComponentStructure]] — Shows Layer 1 (Governance) component relationships.
-- [[Architecture/SystemContext]] — Shows Bridge as mediator between Spec-Kit and Superpowers.
+- [Architecture/ComponentStructure](../component_structure.md) — Shows Layer 1 (Governance) component relationships.
+- [Architecture/SystemContext](../system_context.md) — Shows Bridge as mediator between Spec-Kit and Superpowers.
 - [[Quality/ISO25010Quality]] — Maintainability evaluation of the sovereignty model.

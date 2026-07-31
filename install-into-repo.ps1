@@ -25,7 +25,8 @@ $copyItems = @(
     ".agents",
     "hooks",
     ".graphifyignore",
-    "install.ps1"
+    "install.ps1",
+    "skills"
 )
 
 foreach ($item in $copyItems) {

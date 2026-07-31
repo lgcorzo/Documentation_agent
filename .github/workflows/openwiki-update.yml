@@ -40,6 +40,11 @@ jobs:
           LANGCHAIN_PROJECT: openwiki
           LANGCHAIN_TRACING_V2: "true"
 
+      - name: Clean Duplicates and Convert WikiLinks to Clickable Relative Links
+        run: |
+          rm -rf openwiki/src
+          python3 skills/validate/scripts/convert_links.py
+
       - name: Set up Python & UV
         uses: astral-sh/setup-uv@v5
 
