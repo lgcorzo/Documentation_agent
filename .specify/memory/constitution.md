@@ -1,50 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Documentation_agent Ecosystem Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Deterministic-First Documentation
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+All software documentation is grounded in **local, executable AST extraction** tools (`graphify`, `pyreverse`, Python `ast` module) before any LLM synthesizes prose. UML 2.0 class diagrams, inheritance hierarchies, and dependency graphs are mathematically derived from the Abstract Syntax Tree — never hallucinated. This ensures zero-drift between code reality and documentation.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. ISO 42010 Architecture Description Coherence
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+The **OKF root bundle (`./openwiki/`)** is the single, authoritative **Architecture Description (AD) artifact** per ISO/IEC/IEEE 42010:2022. All architectural viewpoints (Context, Component, Sequence, Deployment, Security) are mapped and traceable through this bundle. Scattered architectural intent across `.specify/`, `graphify-out/`, or other locations must always forward-reference back to the OKF wiki.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Sovereignty Separation (Topology of Authority)
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Three domains of authority are strictly separated:
+- **Spec-Kit** owns specification, planning, and task breakdown (`spec.md`, `plan.md`, `tasks.md`, `constitution.md`).
+- **Superpowers** owns code execution, TDD cycles (Red-Green-Refactor), and subagent dispatch.
+- **OpenWiki/OKF** owns the documentation-as-architecture-description artifact.
+- The **Bridge** (`.specify/bridge/`) mediates all cross-domain state transitions. Direct execution without an active bridge handoff file is a policy violation.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Provenance & Attestation (ISO 15289 Traceability)
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Every generated documentation artifact must include provenance metadata:
+- `generated`: Which agent or tool produced the artifact.
+- `verified`: Whether the artifact was validated against live code.
+- `last_verified_commit`: The git SHA at which the artifact was last confirmed accurate.
+- Bridge events are logged to `.specify/bridge/bridge-events.jsonl` and consumed by the CI/CD pipeline to populate trust signals.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Incremental Documentation by Default
+
+Git-diff mode is the default operational mode for documentation updates. Full documentation regeneration is on-demand only. The `post-commit` hook triggers `graphify update .` asynchronously, and the OpenWiki CI/CD pipeline analyzes only changed files via `git diff`. This minimizes token consumption and ensures documentation stays current with every commit.
+
+## Technical Standards
+
+- **Language**: Python 3.10+ (per `copilot-instructions.md` Section 1)
+- **Documentation Format**: Open Knowledge Format (OKF) v0.2 with mandatory YAML frontmatter
+- **Diagram Notation**: UML 2.0 via Mermaid.js
+- **AST Tools**: `graphify`, `pyreverse` (pylint backend), Python `ast` module
+- **ISO Compliance**: ISO/IEC/IEEE 42010:2022, ISO/IEC/IEEE 15289:2019, ISO/IEC 25010
+- **CI/CD**: GitHub Actions with real OKF conformance validation (no mocks)
+
+## Development Workflow
+
+1. **Specification**: Use Spec-Kit to define requirements → `spec.md` → `plan.md` → `tasks.md`
+2. **Execution**: Use Superpowers bridge for TDD implementation cycles
+3. **Documentation**: Run AST extraction → synthesize OKF pages → validate via CI/CD
+4. **Verification**: OKF conformance checker validates frontmatter, relative paths, Mermaid syntax, and provenance fields
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- This constitution supersedes all informal agreements and ad-hoc practices.
+- Amendments require: documentation of rationale, explicit user approval, and migration plan.
+- All PRs and reviews must verify compliance with sovereignty boundaries.
+- Complexity must be justified; apply YAGNI ruthlessly.
+- Use `.github/copilot-instructions.md` Section 3 (Topology of Sovereignty) for runtime development guidance.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-07-31 | **Last Amended**: 2026-07-31

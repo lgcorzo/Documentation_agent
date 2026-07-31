@@ -285,7 +285,42 @@ async def connect(url: str) -> Pool:
     pool = await create_pool(url, max_connections=20)
     return pool
 ```
-## 3. Separación de Soberanía
-- *Spec-Kit* manda en la especificación (`spec.md`, `plan.md`, `tasks.md`).
-- *Superpowers* manda en la ejecución mediante TDD estricto (Red-Green-Refactor).
-- La documentación en `./openwiki/` se rige por el estándar **OKF v0.2** y debe reflejar la realidad del código ("As Is") mediante Pyreverse.
+---
+
+## 3. Topology of Sovereignty (Non-Negotiable)
+
+The following sovereignty rules are **mandatory** for all agents, skills, and AI-assisted workflows in this repository. Violations will result in inconsistent architectural artifacts and break ISO compliance audits.
+
+### 3.1 Spec-Kit Sovereignty (Intent & Breakdown)
+
+- **Spec-Kit is authoritative** for all specification, planning, and task breakdown artifacts:
+  - `specs/` — Feature specifications (`spec.md`)
+  - `plan.md` — Implementation plans
+  - `tasks.md` — Micro-task decomposition
+  - `.specify/memory/constitution.md` — Project principles
+- **No agent or skill may modify these files** outside of a Spec-Kit workflow invocation.
+
+### 3.2 Superpowers Sovereignty (Execution Only)
+
+- **Superpowers is authoritative** for code execution, TDD cycles (Red-Green-Refactor), and subagent dispatch.
+- Superpowers operates on: `src/`, `tests/`, and runtime scripts.
+- **Direct execution without an active bridge handoff file (`superpowers-handoff.json`) is a policy violation.**
+
+### 3.3 OKF / OpenWiki Sovereignty (Architecture Description)
+
+- The **OKF root bundle (`./openwiki/`)** is the official **Architecture Description (AD) artifact** under **ISO/IEC/IEEE 42010:2022**.
+- Every `spec.md` or `plan.md` in `.specify/` **must include a forward-reference link** to its corresponding concept node in the OKF wiki.
+- Documentation in `./openwiki/` must reflect the reality of the code ("As Is") using deterministic AST extraction (Pyreverse, Graphify) — **never hallucinated**.
+- The documentation standard is **OKF v0.2** with mandatory YAML frontmatter.
+
+### 3.4 Bridge Mediation
+
+- The bridge (`.specify/bridge/`) mediates state transitions between Spec-Kit and Superpowers.
+- Bridge events are logged to `.specify/bridge/bridge-events.jsonl` for ISO 15289 traceability.
+- All generated documentation must include `generated` and `verified` provenance metadata populated from bridge events.
+
+### 3.5 Deterministic-First Pipeline
+
+- **Pyreverse** and **Graphify** must run locally *before* any LLM touches the documentation text.
+- All UML 2.0 class diagrams (Mermaid.js) are mathematically grounded in the AST, not hallucinated by the model.
+- Local AST extraction has zero external LLM cost and produces zero-hallucination structural data.

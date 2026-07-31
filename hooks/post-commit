@@ -37,6 +37,12 @@ else
     elif command -v uvx > /dev/null 2>&1; then
         nohup timeout 300 uvx --from graphifyy graphify update . > ~/.cache/graphify-rebuild.log 2>&1 &
     fi
+
+    # Log bridge event for ISO 15289 traceability
+    REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/hooks/log-bridge-event.sh" ]; then
+        bash "$REPO_ROOT/hooks/log-bridge-event.sh" "post_commit_graph_update" "graphify and CRG triggered"
+    fi
 fi
 
 exit 0

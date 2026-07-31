@@ -140,6 +140,15 @@ La evidencia reproducible de problemas detectados, comandos ejecutados y resulta
 - `Documents/Wiki/EVIDENCE.md`
 - `Documents/Wiki/PROBLEMS_AND_FIXES.md`
 
+## 📈 Project Evolution & Changelog
+
+### 2026-07-31: Lantek ISO-Compliant Agentic & Documental Architecture Refactoring
+- **Governance**: Populated `.specify/memory/constitution.md` with concrete principles (Deterministic-First, AD Coherence, Sovereignty Separation, Provenance, Incremental). Updated sovereignty guidelines in `.github/copilot-instructions.md`.
+- **Engineering Core**: Created Spec-Kit ↔ Superpowers bridge mediation files (`sovereignty-rules.md`, `bridge-config.json`, `bridge-events.jsonl`).
+- **Git Hooks**: Integrated background event logging (`hooks/log-bridge-event.sh` and updated `hooks/post-commit`) to track graph updates.
+- **ISO Documentation**: Developed full OpenWiki architecture suite (ISO 42010 context/component/AD overview/ADRs, ISO 15289 contracts/audit log, ISO 25010 quality matrix, and ISO 26514 developer guide) inside `./openwiki/`.
+- **CI/CD Quality Gates**: Replaced the mock validator in `skills/validate/scripts/okf_validate.py` with a strict conformance validation utility verifying frontmatter fields, paths, and Mermaid diagram syntax. Corrected CI workflow config files.
+- **Skills Clean Up**: Consolidated and enhanced skills inside `.agents/skills/` (removed legacy `.agentskills/` duplicates).
 
 ## references 
 
