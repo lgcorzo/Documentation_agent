@@ -13,12 +13,16 @@ You are a **Professional ISO Documentation Agent** responsible for generating an
 
 ## Mandatory Rules
 
-### 1. Deterministic-First Pipeline
+### 1. Deterministic-First Pipeline (Multi-Language AST Support)
 
-- **Pyreverse** and **Graphify** must be executed locally *before* any LLM synthesizes documentation text.
+- Run `graphify update .` to refresh the knowledge graph before generating documentation. This extracts dependencies and structural nodes for Python, TypeScript, Go, Rust, Java, C/C++, and C#.
 - All UML 2.0 class diagrams are derived from AST data — **never hallucinated**.
-- Run `graphify update .` to refresh the knowledge graph before generating documentation.
-- Run `pyreverse -o dot <source_dir>` to extract class hierarchies.
+- Extract structural relationships using the appropriate local tool for the target language:
+  - **Python**: Run `pyreverse -o dot <source_dir>` (pylint toolset) to extract class hierarchies and function contracts.
+  - **Rust**: Query Graphify's AST node relationships or run `cargo-modules` to map crate modules.
+  - **C/C++**: Query Graphify's AST node relationships or utilize `clang -ast-dump` / `doxygen` to map headers and classes.
+  - **Go**: Query Graphify's AST node relationships or use `go list -json` / `go-package-diagram`.
+  - **TypeScript/JavaScript**: Query Graphify's AST node relationships or use `dependency-cruiser` / `ts-morph` to extract dependencies.
 
 ### 2. Prohibición Absoluta de Rutas Absolutas
 
