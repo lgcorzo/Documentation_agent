@@ -78,7 +78,7 @@ last_verified_commit: "N/A"
 - **Configurations**: Deleted `.code-review-graphignore` and removed `.code-review-graph/` from `.gitignore` and `.specify/bridge/bridge-config.json`.
 - **OpenWiki Pages**: Updated architecture documents (`iso_42010_overview.md`, `system_context.md`, `component_structure.md`, `adr_001_ast_engine.md`, `api_contracts.md`, `iso_25010_quality.md`, and `developer_guide.md`) to align with the single-tool AST model (Graphify + Pyreverse).
 - **Skills**: Removed references to CRG in `uml2-okf-documenter/SKILL.md` and added language-specific AST tools (C++, C, Rust, Go, Python, TypeScript) to the agent instructions in both skills.
-- **Manuals**: Updated the root `MANUAL.md` and the developer onboarding guide with C++, C, Rust, Go, TypeScript/JavaScript, and Python prerequisites and execution rules.
+- **Manuals**: Updated the root `MANUAL.md` and the developer onboarding guide with C++, C, Rust, Go, TypeScript/JavaScript, and Python prerequisites and execution rules. Added Section 4.D detailing step-by-step local LangChain OpenWiki CLI installation, configuration, and execution.
 
 ---
 
