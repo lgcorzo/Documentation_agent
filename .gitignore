@@ -25,3 +25,9 @@ dist/
 build/
 target/
 .uv/
+
+# Artefactos locales y grafos de conocimiento
+.code-review-graph/
+graphify-out/
+.specify/state.lock
+superpowers-handoff.json
