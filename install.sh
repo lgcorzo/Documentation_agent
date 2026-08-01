@@ -1,7 +1,7 @@
 #!/bin/bash
 # install.sh
 # Script de instalación y configuración automatizada para Ubuntu / Linux.
-# Configura Ollama, uv, code-review-graph, graphify y Git Hooks.
+# Configura uv, graphify y Git Hooks.
 
 # Colores para salida
 CYAN='\033[0;36m'

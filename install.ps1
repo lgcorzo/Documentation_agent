@@ -1,6 +1,6 @@
 # install.ps1
 # Script de instalación y configuración automatizada para Windows (Ejecutar en PowerShell).
-# Configura Ollama, uv, code-review-graph, graphify y Git Hooks.
+# Configura uv, graphify y Git Hooks.
 
 $ErrorActionPreference = "Stop"
 
