@@ -58,6 +58,13 @@ last_verified_commit: "N/A"
 | [UserGuides/DeveloperGuide](user_guides/developer_guide.md) | Developers | Installation, onboarding, sovereignty rules, troubleshooting |
 
 ---
+## 🧱 1:1 Mirrored Module Specifications
+
+The following modules represent the Python validation and links conversion scripts:
+- [[modules/skills/validate/scripts/convert_links]]
+- [[modules/skills/validate/scripts/okf_validate]]
+
+---
 
 ## 📝 Audit & Governance
 
@@ -94,5 +101,11 @@ openwiki/
 │   └── iso_25010_quality.md          # ISO 25010 Quality Assessment
 ├── user_guides/
 │   └── developer_guide.md            # Developer Onboarding Guide
+├── modules/
+│   └── skills/
+│       └── validate/
+│           └── scripts/
+│               ├── convert_links.md  # Link converter
+│               └── okf_validate.md   # OKF Validator
 └── logs.md                           # Audit Log
 ```
