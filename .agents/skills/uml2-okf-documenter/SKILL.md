@@ -329,6 +329,10 @@ sequenceDiagram
      - Annotate interfaces with `<<interface>>` and abstract classes with `<<abstract>>`.
      - Explicitly show polymorphism: repeat overridden methods in subclasses, using a trailing asterisk (e.g. `parse()*`) or bolding to differentiate abstract or overridden behavior.
      - Represent encapsulation visibility markers: `+` (public), `-` (private), `#` (protected), `~` (package/internal).
+   - **Relationships & Associations**:
+     - Clearly define the class heritage and inheritance trees.
+     - Clearly define structural and behavioral relationships with other classes within the same package.
+     - Clearly define relationships and dependencies with classes in sub-packages (the packages below in the folder hierarchy).
 
 2. **UML 2.0 Sequence Diagrams (`sequenceDiagram`) for Execution Workflows**:
    - **Lifelines & Participants**: Define participants and actors clearly with descriptive names.
