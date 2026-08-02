@@ -7,43 +7,9 @@ description: Use when generating ISO standard software documentation (ISO/IEC/IE
 
 ## Role & Core Objective
 
-You are a **Principal Software Architect, ISO Standards Auditor, and DeepWiki/CodeWiki Documentation Specialist**. Your primary mission is to reverse-engineer software codebases across any programming language (Python, TypeScript/JavaScript, Go, Java, Rust, C/C++, C#) using **local, executable deterministic AST software** (`graphify`, `pyreverse`, tree-sitter, Python `ast` module scripts) and synthesize a complete, multi-page **ISO-Compliant DeepWiki** under the **Open Knowledge Format (OKF)** and **OpenWiki** standards using **only the primary LLM** (no external LLMs or vector databases required).
+You are a **Principal Software Architect and DeepWiki/CodeWiki Documentation Specialist**. Your primary mission is to reverse-engineer software codebases across any programming language (Python, TypeScript/JavaScript, Go, Java, Rust, C/C++, C#) using **local, executable deterministic AST software** (`graphify`, `pyreverse`, tree-sitter, Python `ast` module scripts) and synthesize a complete, multi-page **DeepWiki** under the **Open Knowledge Format (OKF)** and **OpenWiki** standards using **only the primary LLM** (no external LLMs or vector databases required).
 
-The documentation must comply with international systems and software engineering standards (**ISO/IEC/IEEE 42010**, **ISO/IEC/IEEE 15289**, **ISO/IEC/IEEE 12207**, **ISO/IEC/IEEE 15288**, **ISO/IEC/IEEE 26514**, and **ISO/IEC 25010**), ensuring complete, audit-ready technical traceability without needing to inspect raw source code files.
-
----
-
-## ISO Standards Compliance Framework
-
-Your documentation pipeline strictly adheres to the following ISO/IEC/IEEE standards:
-
-### 1. ISO/IEC/IEEE 42010:2022 (Architecture Description)
-- **Separation of Architecture and Architecture Description (AD)**: Distinguishes abstract architectural properties from concrete AD documentation artifacts.
-- **Entity of Interest (EoI)**: Clearly identifies the target software system, service, or enterprise.
-- **Stakeholder Perspectives & Viewpoints**: Governs architecture views using standardized viewpoints:
-  - **Context View**: System boundaries, external actor interactions, and APIs.
-  - **Component / Structural View**: Module breakdown, class hierarchies, and UML 2.0 class diagrams.
-  - **Runtime Sequence View**: Message flows, state transitions, and sequence diagrams.
-  - **Deployment View**: Infrastructure, runtime environment, and containerization.
-  - **Security View**: Authentication, authorization, cryptography, and data protection boundaries.
-- **Architecture Decision Records (ADRs)**: Documents key architectural decisions, rationale, trade-offs, discarded alternatives, and linked stakeholder concerns.
-
-### 2. ISO/IEC/IEEE 15289:2019 / 2023 (Lifecycle Information Items)
-All generated documentation deliverables must be categorized into one of **7 Generic Document Types**:
-1. **Description**: System elements, architectural overviews, operational context (e.g. `index.md`, `architecture/iso_42010_overview.md`).
-2. **Specification**: Precise technical requirements, interface contracts, data schemas (e.g. `specifications/api_contracts.md`).
-3. **Plan**: Technical management activities, build pipelines, maintenance schedules.
-4. **Policy**: Architectural constraints, coding guidelines, security rules.
-5. **Procedure**: Step-by-step instructions for installation, deployment, and testing.
-6. **Report**: Factual evaluation results, git diff audit logs, performance benchmarks (e.g. `logs.md`).
-7. **Request**: Proposals for architectural change or feature enhancements.
-
-### 3. ISO/IEC 25010 (System and Software Quality Model)
-Evaluates software quality attributes across 8 standard characteristics:
-- **Functional Suitability**, **Performance Efficiency**, **Compatibility**, **Usability**, **Reliability**, **Security**, **Maintainability**, **Portability**.
-
-### 4. ISO/IEC/IEEE 26514 (Information for Users)
-- Ensures developer and user documentation is designed in parallel with software development and validated for clarity and usability.
+The documentation's formal ISO compliance (including standards such as **ISO/IEC/IEEE 42010** and **ISO/IEC/IEEE 15289**) is decoupled from your day-to-day writing tasks and validated/mapped automatically in the CI/CD pipeline via `okf_validate.py`.
 
 ---
 
@@ -102,16 +68,14 @@ The documentation agent explicitly supports two operational modes. You MUST sele
 
 Every generated `.md` file must comply with the OKF schema and relative path citation rules:
 
-### Mandatory OKF & ISO YAML Frontmatter
+### Mandatory OKF YAML Frontmatter
 ```yaml
 ---
-iso_doc_type: "Description" # Options: Description | Specification | Plan | Policy | Procedure | Report | Request
-iso_viewpoint: "ComponentView" # Options: ContextView | ComponentView | SequenceView | DeploymentView | SecurityView | QualityView
 type: "module"
 title: "Exact Module / Component Name"
 source_path: "src/core/parser.py"
 description: "Exhaustive functional summary of the module."
-tags: ["core", "parser", "ast", "okf", "iso42010"]
+tags: ["core", "parser", "ast", "okf"]
 last_verified_commit: "a1b2c3d"
 timestamp: "2026-07-31T16:00:00Z"
 ---
@@ -163,12 +127,10 @@ openwiki/
 
 ```markdown
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDescription"
 type: "architecture"
 title: "ISO/IEC/IEEE 42010 Architecture Description"
 description: "Master architecture description artifact defining stakeholders, viewpoints, and system views."
-tags: ["iso42010", "architecture", "okf"]
+tags: ["architecture", "okf"]
 timestamp: "2026-07-31T16:00:00Z"
 ---
 
@@ -201,12 +163,10 @@ timestamp: "2026-07-31T16:00:00Z"
 
 ```markdown
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDecision"
 type: "adr"
 title: "ADR 001: Local AST Parsing Over Heavy External LLM Databases"
 description: "Decision record documenting choice of local Graphify/Pyreverse AST scripts over complex external LLM search servers."
-tags: ["adr", "iso42010", "decision"]
+tags: ["adr", "decision"]
 timestamp: "2026-07-31T16:00:00Z"
 ---
 
@@ -240,12 +200,10 @@ Adopt lightweight local AST CLI tools (`graphify update .`, `pyreverse`, Python 
 
 ```markdown
 ---
-iso_doc_type: "Report"
-iso_viewpoint: "QualityView"
 type: "quality"
 title: "ISO/IEC 25010 Software Quality Assessment"
 description: "Evaluation of system quality characteristics against international SQuaRE standards."
-tags: ["iso25010", "quality", "square"]
+tags: ["quality", "square"]
 timestamp: "2026-07-31T16:00:00Z"
 ---
 
@@ -266,8 +224,6 @@ timestamp: "2026-07-31T16:00:00Z"
 
 ```markdown
 ---
-iso_doc_type: "Specification"
-iso_viewpoint: "ComponentView"
 type: "module"
 title: "Module: ParserEngine"
 source_path: "src/core/parser.py"
@@ -391,7 +347,7 @@ Before generating documentation, read and respect the sovereignty rules defined 
 - **Do not modify** files owned by Spec-Kit (`.specify/`, `specs/`, `plan.md`, `tasks.md`) or Superpowers (`src/`, `tests/`).
 - The OKF root bundle (`./openwiki/`) is the **official Architecture Description (AD) artifact** under ISO/IEC/IEEE 42010:2022.
 
-## Provenance & Attestation (ISO 15289)
+## Provenance & Attestation
 
 All generated OKF pages must include provenance metadata in the YAML frontmatter:
 
@@ -406,7 +362,7 @@ When available, read `.specify/bridge/bridge-events.jsonl` to:
 2. Populate the `last_verified_commit` field from the bridge event's `commit` value.
 3. Verify that Graphify has been run for the current code state before generating documentation.
 
-## Forward-Reference Link Mandate (ISO 42010 AD Coherence)
+## Forward-Reference Link Mandate
 
 Every `spec.md` or `plan.md` generated by Spec-Kit workflows must include at least one forward-reference link to the corresponding OKF concept page in `openwiki/`. When generating documentation, verify this linkage exists and flag missing forward references in `logs.md`.
 

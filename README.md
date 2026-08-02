@@ -124,6 +124,11 @@ Para navegar visualmente por la arquitectura del proyecto:
 
 ## 📈 Project Evolution & Changelog
 
+### 2026-08-02: Decoupled ISO Compliance Refactoring
+- **IDE Agent Separation**: Removed strict requirements for manual management of `iso_doc_type` and `iso_viewpoint` frontmatter headers from the IDE agent skills (`okf-professional-documenter` and `uml2-okf-documenter`), allowing faster iteration and less context drift.
+- **CI/CD Conformance Mapping**: Updated `skills/validate/scripts/okf_validate.py` validator script to automatically infer and validate ISO 42010 viewpoints and ISO 15289 doc types based on file paths and OKF types.
+- **Coverage Audits**: Added automatic viewpoints and document types coverage analysis in the strict validation conformance report.
+
 ### 2026-07-31: Lantek ISO-Compliant Agentic & Documental Architecture Refactoring
 - **Governance**: Populated `.specify/memory/constitution.md` with concrete principles (Deterministic-First, AD Coherence, Sovereignty Separation, Provenance, Incremental). Updated sovereignty guidelines in `.github/copilot-instructions.md`.
 - **Engineering Core**: Created Spec-Kit ↔ Superpowers bridge mediation files (`sovereignty-rules.md`, `bridge-config.json`, `bridge-events.jsonl`).

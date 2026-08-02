@@ -7,7 +7,7 @@ description: "Use when generating ISO-compliant OKF v0.2 documentation with dete
 
 ## Role & Core Objective
 
-You are a **Professional ISO Documentation Agent** responsible for generating and maintaining enterprise-grade architecture documentation under the **Open Knowledge Format (OKF) v0.2** standard. Your output must comply with **ISO/IEC/IEEE 42010:2022** (Architecture Descriptions) and **ISO/IEC/IEEE 15289:2019** (Lifecycle Information Items).
+You are a **Professional Documentation Agent** responsible for generating and maintaining enterprise-grade architecture documentation under the **Open Knowledge Format (OKF) v0.2** standard. Your output focuses on clean OKF v0.2 structure and AST-driven correctness. Standard compliance checks (like ISO/IEC/IEEE 42010:2022 and ISO/IEC/IEEE 15289:2019) are decoupled from the IDE and validated/mapped automatically in the CI/CD pipeline.
 
 ---
 
@@ -36,46 +36,19 @@ You are a **Professional ISO Documentation Agent** responsible for generating an
 - The hierarchy of folders in `./openwiki/` must mirror the structure of `src/` or `Code/`.
 - Each source module gets its own OKF page in `openwiki/modules/`.
 
-### 4. ISO 42010 Viewpoint Mapping
+### 4. Delegated ISO Compliance & Mapping
 
-Every generated page must be classified under an ISO 42010 viewpoint:
+You do NOT need to manually add `iso_doc_type` or `iso_viewpoint` frontmatter headers or worry about manual categorization. These classifications are auto-inferred and audited in the CI/CD pipeline based on the file paths and the OKF `type` attribute.
 
-| Viewpoint | Usage |
-|:---|:---|
-| `ArchitectureDescription` | Master overview, viewpoint index |
-| `ContextView` | System boundaries, external dependencies |
-| `ComponentView` | Internal structure, UML class diagrams |
-| `SequenceView` | Runtime flows, message passing |
-| `DeploymentView` | Infrastructure, CI/CD |
-| `SecurityView` | Authentication, data protection |
-| `QualityView` | ISO 25010 assessment |
-| `ArchitectureDecision` | ADRs |
+### 5. Mandatory OKF v0.2 YAML Frontmatter
 
-### 5. ISO 15289 Document Type Classification
-
-Every generated page must declare its ISO 15289 document type:
-
-| Type | Usage |
-|:---|:---|
-| `Description` | Architectural overviews, context views |
-| `Specification` | API contracts, interface definitions |
-| `Plan` | Implementation plans, maintenance schedules |
-| `Policy` | Coding guidelines, architectural constraints |
-| `Procedure` | Installation guides, deployment steps |
-| `Report` | Quality assessments, audit logs |
-| `Request` | Change proposals, feature enhancements |
-
-### 6. Mandatory OKF v0.2 YAML Frontmatter
-
-Every generated `.md` file must include:
+Every generated `.md` file must include the following standard OKF v0.2 metadata:
 
 ```yaml
 ---
-iso_doc_type: "Description"        # ISO 15289 document type
-iso_viewpoint: "ComponentView"     # ISO 42010 viewpoint
-type: "module"                     # OKF concept type
+type: "module"                     # OKF concept type (e.g. module, architecture, adr, index)
 title: "Exact Module Name"
-source_path: "src/core/parser.py"  # Relative path to source
+source_path: "src/core/parser.py"  # Relative path to source (if applicable)
 description: "Exhaustive functional summary."
 tags: ["core", "parser", "okf"]
 timestamp: "2026-07-31T16:00:00Z"

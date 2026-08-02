@@ -161,15 +161,20 @@ Para evitar colisiones de contexto en flujos agénticos complejos, respeta las f
 
 ## 🔍 6. Validación de Conformidad (CI/CD Quality Gates)
 
-El pipeline de CI/CD cuenta con un motor de validación estricto para asegurar que la documentación nunca sufra de obsolescencia.
+El pipeline de CI/CD cuenta con un motor de validación estricto para asegurar que la documentación cumpla con los estándares organizacionales de manera automatizada.
+
+### Separación de Responsabilidades (IDE vs. CI/CD)
+* **IDE (Desarrollador/Agente):** Genera documentación ligera y estructurada enfocada únicamente en el estándar **OKF v0.2**. Los archivos markdown contienen metadatos simplificados (`type`, `title`, `description`, `tags`, `timestamp`, `generated`, `verified`, `last_verified_commit`). No es necesario redactar ni gestionar manualmente los campos de cumplimiento ISO.
+* **CI/CD Pipeline (Validador):** Al ejecutarse con la bandera `--strict`, el script `okf_validate.py` mapea e infiere automáticamente los viewpoints de **ISO/IEC/IEEE 42010** y tipos de documento de **ISO/IEC/IEEE 15289** según la ruta del archivo y su tipo de concepto OKF. Genera un reporte detallado de cumplimiento normativo y cobertura de arquitectura de forma 100% automatizada.
 
 ### Ejecución Local del Validador
-Para verificar si tus archivos Markdown cumplen con la estructura OKF, ejecuta:
+Para verificar si tus archivos Markdown cumplen con la estructura OKF e ISO (por inferencia), ejecuta:
 ```bash
 python3 skills/validate/scripts/okf_validate.py ./openwiki --strict
 ```
 
 El validador inspeccionará:
-* **YAML Frontmatter:** Presencia de tags obligatorios (`title`, `description`, `timestamp`, `iso_doc_type`, `generated`, `verified`, `last_verified_commit`).
+* **YAML Frontmatter:** Presencia de campos OKF obligatorios (`type`, `title`, `description`, `tags`, `timestamp`) y de procedencia (`generated`, `verified`, `last_verified_commit`).
+* **Cumplimiento ISO (Inferencia y Validación):** Mapeo automático a tipos de documentos ISO (Description, Specification, Report, Procedure) y viewpoints ISO (ContextView, ComponentView, SequenceView, DeploymentView, SecurityView, QualityView, ArchitectureDecision, ArchitectureDescription) y reporte de cobertura total.
 * **Sintaxis de Mermaid:** Que los diagramas UML no tengan llaves o corchetes abiertos que rompan la renderización.
 * **Rutas Absolutas:** Bloqueo de rutas locales absolutas (ej. `/home/user/...`) garantizando la portabilidad del repositorio.

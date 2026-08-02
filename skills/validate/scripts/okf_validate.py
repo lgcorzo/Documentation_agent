@@ -85,21 +85,83 @@ def extract_frontmatter(content: str) -> tuple[dict[str, Any], str]:
     return fm, body
 
 
+def infer_iso_metadata(filepath: str, fm: dict[str, Any]) -> tuple[str, str]:
+    """Infers the iso_doc_type and iso_viewpoint from filepath and frontmatter."""
+    # Normalize filepath to use forward slashes
+    path_norm = filepath.replace("\\", "/").lower()
+    concept_type = fm.get("type", "").lower()
+
+    # Determine viewpoint
+    viewpoint = ""
+    if "openwiki/architecture/iso_42010_overview.md" in path_norm or "architecture/iso_42010_overview.md" in path_norm:
+        viewpoint = "ArchitectureDescription"
+    elif "openwiki/architecture/system_context.md" in path_norm or "architecture/system_context.md" in path_norm:
+        viewpoint = "ContextView"
+    elif "openwiki/architecture/component_structure.md" in path_norm or "architecture/component_structure.md" in path_norm:
+        viewpoint = "ComponentView"
+    elif "openwiki/architecture/runtime_sequences.md" in path_norm or "architecture/runtime_sequences.md" in path_norm:
+        viewpoint = "SequenceView"
+    elif "openwiki/architecture/deployment_view.md" in path_norm or "architecture/deployment_view.md" in path_norm:
+        viewpoint = "DeploymentView"
+    elif "openwiki/architecture/security_view.md" in path_norm or "architecture/security_view.md" in path_norm:
+        viewpoint = "SecurityView"
+    elif "/adr/" in path_norm or "architecture/adr/" in path_norm:
+        viewpoint = "ArchitectureDecision"
+    elif "/modules/" in path_norm or concept_type == "module":
+        viewpoint = "ComponentView"
+    elif "/quality/" in path_norm or concept_type == "quality":
+        viewpoint = "QualityView"
+    elif "logs.md" in path_norm or concept_type in ("report", "logs"):
+        viewpoint = "QualityView"
+    elif "/specifications/" in path_norm or concept_type == "specification":
+        viewpoint = "ComponentView"
+    elif "/user_guides/" in path_norm or concept_type == "procedure":
+        viewpoint = "DeploymentView"
+    elif "index.md" in path_norm or concept_type == "index":
+        viewpoint = "ArchitectureDescription"
+    else:
+        viewpoint = "ContextView"
+
+    # Determine doc_type
+    doc_type = ""
+    if "/modules/" in path_norm or concept_type == "module":
+        doc_type = "Specification"
+    elif "/specifications/" in path_norm or concept_type == "specification":
+        doc_type = "Specification"
+    elif "/quality/" in path_norm or "logs.md" in path_norm or concept_type in ("quality", "report"):
+        doc_type = "Report"
+    elif "/adr/" in path_norm or concept_type == "adr":
+        doc_type = "Description"
+    elif "/user_guides/" in path_norm or concept_type == "procedure":
+        doc_type = "Procedure"
+    else:
+        doc_type = "Description"
+
+    # Override with frontmatter if explicitly present
+    fm_doc_type = fm.get("iso_doc_type")
+    fm_viewpoint = fm.get("iso_viewpoint")
+    
+    final_doc_type = fm_doc_type if fm_doc_type else doc_type
+    final_viewpoint = fm_viewpoint if fm_viewpoint else viewpoint
+
+    return final_doc_type, final_viewpoint
+
+
 def check_frontmatter_fields(
     fm: dict[str, Any], filepath: str, strict: bool
-) -> list[str]:
-    """Validate required and optional frontmatter fields."""
+) -> tuple[list[str], str, str]:
+    """Validate required and optional frontmatter fields.
+    
+    Returns (errors, inferred_doc_type, inferred_viewpoint).
+    """
     errors: list[str] = []
     for field in REQUIRED_FIELDS:
         if field not in fm:
             errors.append(f"{filepath}: Missing required field '{field}'")
 
+    inferred_doc_type, inferred_viewpoint = infer_iso_metadata(filepath, fm)
+
     if strict:
-        for field in STRICT_FIELDS:
-            if field not in fm:
-                errors.append(
-                    f"{filepath}: [STRICT] Missing ISO field '{field}'"
-                )
         for field in PROVENANCE_FIELDS:
             if field not in fm:
                 errors.append(
@@ -107,22 +169,20 @@ def check_frontmatter_fields(
                 )
 
         # Validate iso_doc_type value
-        iso_doc_type = fm.get("iso_doc_type", "")
-        if iso_doc_type and iso_doc_type not in VALID_ISO_DOC_TYPES:
+        if inferred_doc_type not in VALID_ISO_DOC_TYPES:
             errors.append(
-                f"{filepath}: Invalid iso_doc_type '{iso_doc_type}'. "
+                f"{filepath}: Invalid iso_doc_type '{inferred_doc_type}'. "
                 f"Must be one of: {', '.join(sorted(VALID_ISO_DOC_TYPES))}"
             )
 
         # Validate iso_viewpoint value
-        iso_viewpoint = fm.get("iso_viewpoint", "")
-        if iso_viewpoint and iso_viewpoint not in VALID_ISO_VIEWPOINTS:
+        if inferred_viewpoint not in VALID_ISO_VIEWPOINTS:
             errors.append(
-                f"{filepath}: Invalid iso_viewpoint '{iso_viewpoint}'. "
+                f"{filepath}: Invalid iso_viewpoint '{inferred_viewpoint}'. "
                 f"Must be one of: {', '.join(sorted(VALID_ISO_VIEWPOINTS))}"
             )
 
-    return errors
+    return errors, inferred_doc_type, inferred_viewpoint
 
 
 def check_absolute_paths(body: str, filepath: str) -> list[str]:
@@ -214,6 +274,7 @@ def validate_wiki(wiki_path: str, strict: bool = False) -> int:
     total_errors: list[str] = []
     files_checked = 0
     files_passed = 0
+    mapped_files: list[tuple[str, str, str]] = []
 
     for filepath in md_files:
         rel_path = os.path.relpath(filepath, start=os.getcwd())
@@ -238,9 +299,9 @@ def validate_wiki(wiki_path: str, strict: bool = False) -> int:
                 f"{rel_path}: Missing or invalid YAML frontmatter"
             )
         else:
-            file_errors.extend(
-                check_frontmatter_fields(fm, rel_path, strict)
-            )
+            errors_fm, doc_t, view_p = check_frontmatter_fields(fm, rel_path, strict)
+            file_errors.extend(errors_fm)
+            mapped_files.append((rel_path, doc_t, view_p))
 
         file_errors.extend(check_absolute_paths(body, rel_path))
 
@@ -263,6 +324,31 @@ def validate_wiki(wiki_path: str, strict: bool = False) -> int:
     print(f"Files failed:  {files_checked - files_passed}")
     print(f"Total errors:  {len(total_errors)}")
     print(f"{'=' * 60}")
+
+    if strict and mapped_files:
+        print(f"\n{'=' * 60}")
+        print(f"ISO Compliance & Conformance Traceability Report")
+        print(f"{'=' * 60}")
+        print(f"{'File':<40} | {'ISO Doc Type':<13} | {'ISO Viewpoint':<25}")
+        print(f"{'-' * 40}-+-{'-' * 13}-+-{'-' * 25}")
+        for path, doc_t, view_p in mapped_files:
+            # Clean path to keep it readable
+            clean_path = path if len(path) <= 40 else "..." + path[-37:]
+            print(f"{clean_path:<40} | {doc_t:<13} | {view_p:<25}")
+        
+        print(f"\n{'=' * 60}")
+        print("Viewpoint Coverage Analysis:")
+        for vp in sorted(VALID_ISO_VIEWPOINTS):
+            count = sum(1 for _, _, v in mapped_files if v == vp)
+            status = "✅ COVERED" if count > 0 else "⚠️  NOT COVERED"
+            print(f"  - {vp:<25}: {status} ({count} files)")
+            
+        print("\nDocument Type Coverage Analysis:")
+        for dt in sorted(VALID_ISO_DOC_TYPES):
+            count = sum(1 for _, d, _ in mapped_files if d == dt)
+            status = "✅ COVERED" if count > 0 else "⚠️  NOT COVERED"
+            print(f"  - {dt:<25}: {status} ({count} files)")
+        print(f"{'=' * 60}\n")
 
     if total_errors:
         print("\nERRORS:")
