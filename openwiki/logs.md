@@ -52,8 +52,8 @@ last_verified_commit: "N/A"
 
 | ISO Standard | Status | Evidence |
 |:---|:---|:---|
-| ISO/IEC/IEEE 42010:2022 | ✅ Compliant | AD centralized in `openwiki/`, viewpoints mapped, ADRs documented |
-| ISO/IEC/IEEE 15289:2019 | ✅ Compliant | All files have `iso_doc_type` frontmatter, audit log active |
+| ISO/IEC/IEEE 42010:2022 | ✅ Compliant | AD centralized in `openwiki/`, viewpoints mapped automatically, ADRs documented |
+| ISO/IEC/IEEE 15289:2019 | ✅ Compliant | All files automatically mapped to document types, audit log active |
 | ISO/IEC 25010 | ✅ Compliant | Quality matrix generated with evidence citations |
 | ISO/IEC/IEEE 26514 | ✅ Compliant | Developer guide generated |
 

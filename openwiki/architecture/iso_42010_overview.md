@@ -67,6 +67,6 @@ openwiki/
 | ISO Standard | Application in This System | Evidence Location |
 |:---|:---|:---|
 | **ISO/IEC/IEEE 42010:2022** | Architecture Description, Viewpoints, ADRs | `openwiki/architecture/` |
-| **ISO/IEC/IEEE 15289:2019** | Lifecycle information items (7 generic document types) | All `openwiki/**/*.md` frontmatter `iso_doc_type` |
+| **ISO/IEC/IEEE 15289:2019** | Lifecycle information items (7 generic document types) | Auto-mapped and validated in CI/CD (`skills/validate/scripts/okf_validate.py`) |
 | **ISO/IEC 25010** | Software quality model evaluation | `openwiki/quality/iso_25010_quality.md` |
 | **ISO/IEC/IEEE 26514** | Developer and user documentation | `openwiki/user_guides/developer_guide.md` |

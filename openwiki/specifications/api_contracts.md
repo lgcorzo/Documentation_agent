@@ -96,7 +96,7 @@ last_verified_commit: "N/A"
 |:---|:---|:---|
 | YAML Frontmatter | Every `.md` file has `---` delimited YAML | No |
 | Required Fields | `type`, `title`, `description`, `tags`, `timestamp` present | No |
-| ISO Fields | `iso_doc_type`, `iso_viewpoint` present | Yes |
+| ISO Compliance | Mapped/inferred `iso_doc_type` and `iso_viewpoint` are validated | Yes |
 | Provenance Fields | `generated`, `verified`, `last_verified_commit` present | Yes |
 | No Absolute Paths | No absolute path prefixes in file references (e.g. system home/mount paths or Windows drive letters) | No |
 | Mermaid Syntax | Basic bracket/brace matching in `mermaid` blocks | Yes |
