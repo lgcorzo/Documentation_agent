@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Report"
-iso_viewpoint: "QualityView"
 type: "quality"
 title: "ISO/IEC 25010 Software Quality Assessment"
 source_path: "openwiki/quality/iso_25010_quality.md"

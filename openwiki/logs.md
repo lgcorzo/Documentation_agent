@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Report"
-iso_viewpoint: "QualityView"
 type: "report"
 title: "OpenWiki Audit Log"
 description: "Incremental audit log documenting all documentation generation and update events for ISO 15289 traceability."

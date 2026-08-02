@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ComponentView"
 type: "architecture"
 title: "Component Structure View"
 source_path: "openwiki/architecture/component_structure.md"

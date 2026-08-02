@@ -1,9 +1,7 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDescription"
 type: "index"
 title: "Documentation_agent OpenWiki Knowledge Hub"
-description: "Master navigation hub and index for the Documentation_agent ISO-compliant architecture wiki."
+description: "Master navigation hub and index for the Documentation_agent architecture wiki."
 tags: ["index", "navigation", "okf", "openwiki"]
 timestamp: "2026-07-31T18:15:00Z"
 generated: "agent:okf-professional-documenter"

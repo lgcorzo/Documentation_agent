@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Specification"
-iso_viewpoint: "ComponentView"
 type: "specification"
 title: "API & CLI Contracts"
 source_path: "openwiki/specifications/api_contracts.md"

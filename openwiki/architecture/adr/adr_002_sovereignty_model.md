@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDecision"
 type: "adr"
 title: "ADR 002: Sovereignty Separation Model (Spec-Kit / Superpowers / OpenWiki)"
 source_path: "openwiki/architecture/adr/adr_002_sovereignty_model.md"

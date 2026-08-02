@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDescription"
 type: "architecture"
 title: "ISO/IEC/IEEE 42010 Architecture Description"
 description: "Master architecture description artifact defining stakeholders, viewpoints, and system views for the Documentation_agent ecosystem."

@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Specification"
-iso_viewpoint: "ComponentView"
 type: "module"
 title: "Module: convert_links"
 source_path: "skills/validate/scripts/convert_links.py"

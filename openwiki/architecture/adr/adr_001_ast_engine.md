@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ArchitectureDecision"
 type: "adr"
 title: "ADR 001: Local AST Parsing Over External LLM Databases"
 source_path: "openwiki/architecture/adr/adr_001_ast_engine.md"

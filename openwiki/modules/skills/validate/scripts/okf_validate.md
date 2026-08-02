@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Specification"
-iso_viewpoint: "ComponentView"
 type: "module"
 title: "Module: okf_validate"
 source_path: "skills/validate/scripts/okf_validate.py"
@@ -14,7 +12,7 @@ last_verified_commit: "f704192"
 
 # Module Specification: okf_validate
 
-* **Source Reference:** [skills/validate/scripts/okf_validate.py](../../../../../skills/validate/scripts/okf_validate.py) (Lines: L1-L304)
+* **Source Reference:** [skills/validate/scripts/okf_validate.py](../../../../../skills/validate/scripts/okf_validate.py) (Lines: L1-L364)
 
 ## 1. Architectural Role & Responsibilities
 
@@ -82,24 +80,32 @@ sequenceDiagram
 - **Outputs:**
   - `tuple[dict[str, Any], str]`: Separated frontmatter dict and body text.
 
-### `check_frontmatter_fields(fm, filepath, strict)` (L88-125)
-- **Purpose:** Verifies that all required fields (`type`, `title`, `description`, `tags`, `timestamp`) exist in the frontmatter. Under strict mode, validates `iso_doc_type`, `iso_viewpoint`, and provenance attributes (`generated`, `verified`, `last_verified_commit`).
+### `infer_iso_metadata(filepath, fm)` (L88-148)
+- **Purpose:** Infers the `iso_doc_type` and `iso_viewpoint` from the file's path and OKF concept `type` attribute, overriding them with explicit frontmatter values if present.
+- **Inputs:**
+  - `filepath` (`str`): Path to the current file.
+  - `fm` (`dict[str, Any]`): Parsed frontmatter.
+- **Outputs:**
+  - `tuple[str, str]`: Mapped (inferred or explicit) `(iso_doc_type, iso_viewpoint)`.
+
+### `check_frontmatter_fields(fm, filepath, strict)` (L150-186)
+- **Purpose:** Verifies that all required fields (`type`, `title`, `description`, `tags`, `timestamp`) exist in the frontmatter. Under strict mode, validates `generated`, `verified`, `last_verified_commit`, and confirms that the (explicit or inferred) ISO viewpoints and doc types comply with standard values.
 - **Inputs:**
   - `fm` (`dict[str, Any]`): Parsed frontmatter.
   - `filepath` (`str`): Path to the current file.
   - `strict` (`bool`): Toggle strict validation.
 - **Outputs:**
-  - `list[str]`: List of conformance error strings.
+  - `tuple[list[str], str, str]`: Conformance error list, and final mapped `(iso_doc_type, iso_viewpoint)`.
 
-### `check_absolute_paths(body, filepath)` (L128-137)
-- **Purpose:** Scans the document body line-by-line using a regex pattern to detect absolute paths (e.g., /h-o-m-e/, /m-n-t/, C:-\), forcing developers to use relative references.
+### `check_absolute_paths(body, filepath)` (L188-198)
+- **Purpose:** Scans the document body line-by-line using a regex pattern to detect absolute paths, forcing relative references.
 - **Inputs:**
   - `body` (`str`): Markdown body.
   - `filepath` (`str`): File path.
 - **Outputs:**
   - `list[str]`: List of leakage error strings.
 
-### `check_mermaid_syntax(body, filepath)` (L140-197)
+### `check_mermaid_syntax(body, filepath)` (L200-262)
 - **Purpose:** Basic syntactic check of Mermaid diagrams inside markdown blocks. Asserts balanced braces `{}`, brackets `[]`, and parentheses `()`.
 - **Inputs:**
   - `body` (`str`): Markdown body.
@@ -107,8 +113,8 @@ sequenceDiagram
 - **Outputs:**
   - `list[str]`: List of unbalanced syntax error strings.
 
-### `validate_wiki(wiki_path, strict)` (L204-275)
-- **Purpose:** Aggregates checks for all markdown files under `wiki_path`, logs errors to standard output, and returns the total error count.
+### `validate_wiki(wiki_path, strict)` (L264-362)
+- **Purpose:** Aggregates checks for all markdown files under `wiki_path`, logs errors to standard output, maps documents to ISO standards, performs coverage analysis, and returns the total error count.
 - **Inputs:**
   - `wiki_path` (`str`): Root folder of the wiki.
   - `strict` (`bool`): Toggle strict checks.

@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Procedure"
-iso_viewpoint: "ContextView"
 type: "guide"
 title: "Developer Guide"
 source_path: "openwiki/user_guides/developer_guide.md"

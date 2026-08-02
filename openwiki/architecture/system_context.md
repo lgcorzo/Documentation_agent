@@ -1,6 +1,4 @@
 ---
-iso_doc_type: "Description"
-iso_viewpoint: "ContextView"
 type: "architecture"
 title: "System Context View"
 source_path: "openwiki/architecture/system_context.md"
